@@ -9,7 +9,7 @@ def main():
     """Example on how to move the robot in simulation."""
     # create the robot platform simulation
     robot = trifinger_simulation.TriFingerPlatform(
-        visualization=False,
+        visualization=True,
         object_type=ObjectType.COLORED_CUBE,
     )
 
