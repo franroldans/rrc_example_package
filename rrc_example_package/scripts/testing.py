@@ -12,7 +12,7 @@ from rrc_example_package import rearrange_dice_env
 from rrc_example_package.example import PointAtDieGoalPositionsPolicy
 import trifinger_simulation.tasks.rearrange_dice as task
 
-def groundProjectPoint(image_point, tvec, rotMat, camMat, z = 0.011):
+def groundProjectPoint(image_point, tvec, rotMat, camera_matrix, z = 0.011):
     camMat = np.asarray(camera_matrix)
     iRot = np.linalg.inv(rotMat)
     iCam = np.linalg.inv(camMat)
