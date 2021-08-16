@@ -19,10 +19,17 @@ def calculate_XYZ(pos, tvec, rmat, camera_matrix):
     scalingfactor = 1 / camera_matrix[2, 2]
     uv_1=np.array([[pos[0][0][0],pos[0][0][1],1]], dtype=np.float32)
     uv_1=uv_1.T
+    print(scalingfactor)
     suv_1=scalingfactor*uv_1
+    print(suv_1.shape)
     inverse_cam_mtx =  np.linalg.inv(camera_matrix)
     inverse_r_mtx = np.linalg.inv(rmat)
+    print(inverse_cam_mtx)
+    print(inverse_cam_mtx.shape)
+    print(inverse_r_mtx)
+    print(inverse_r_mtx.shape)
     xyz_c=inverse_cam_mtx.dot(suv_1)
+    print(xyz_c.shape)
     xyz_c=xyz_c-tvec
     XYZ=inverse_r_mtx.dot(xyz_c)
     return XYZ
