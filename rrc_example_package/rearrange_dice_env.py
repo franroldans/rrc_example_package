@@ -8,6 +8,7 @@ import numpy as np
 
 import robot_fingers
 import trifinger_simulation.tasks.rearrange_dice as task
+from trifinger_simulation import TriFingerPlatform
 from trifinger_simulation import trifingerpro_limits
 from trifinger_simulation.camera import load_camera_parameters
 from trifinger_object_tracking.py_lightblue_segmenter import segment_image
@@ -271,7 +272,7 @@ class RealRobotRearrangeDiceEnv(gym.GoalEnv):
         if self.platform is not None:
             raise RuntimeError("Once started, this environment cannot be reset.")
 
-        self.platform = trifinger_simulation.TriFingerPlatform(
+        self.platform = TriFingerPlatform(
             visualization=False,
             enable_cameras=True
         )
