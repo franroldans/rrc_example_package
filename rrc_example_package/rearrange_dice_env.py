@@ -40,8 +40,8 @@ class RealRobotRearrangeDiceEnv(gym.GoalEnv):
 
     def __init__(
         self,
-        goal: typing.Optional[task.Goal] = None,
         action_type: ActionType = ActionType.POSITION,
+        goal: typing.Optional[task.Goal] = None,
         step_size: int = 1,
     ):
         """Initialize.
