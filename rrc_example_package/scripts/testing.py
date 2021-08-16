@@ -56,13 +56,15 @@ def main():
             pos,
             rvec,
             tvec,
-            camera_params.camera_matrix,
-            camera_params.distortion_coefficients,
+            camera_params[0].camera_matrix,
+            camera_params[0].distortion_coefficients,
         )
         img_plane.append(proj_pos)
 
-    for pos in img_plane:
-        xyz = calculate_XYZ(pos, tvec, rmat, camera_params.camera_matrix)
+    for pos, i in enumerate(img_plane):
+        xyz = calculate_XYZ(pos, tvec, rmat, camera_params[0].camera_matrix)
+        print(goal[i])
+        print(pos)
         print(xyz)
 
 
