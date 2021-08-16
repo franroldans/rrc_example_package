@@ -24,6 +24,8 @@ def calculate_XYZ(pos, tvec, rmat, camera_matrix):
     inverse_cam_mtx =  np.linalg.inv(camera_matrix)
     inverse_r_mtx = np.linalg.inv(rmat)
     xyz_c=inverse_cam_mtx.dot(suv_1)
+    print(tvec.shape)
+    print(xyz_c.shape)
     xyz_c=xyz_c-tvec
     print(tvec.shape)
     print(xyz_c.shape)
@@ -69,7 +71,7 @@ def main():
 
     for i, pos in enumerate(img_plane):
         print(pos)
-        xyz = calculate_XYZ(pos, tvec, rmat, camera_params[0].camera_matrix)
+        xyz = calculate_XYZ(pos, np.array(tvec), rmat, camera_params[0].camera_matrix)
         print(goal[i])
         print(xyz)
 
