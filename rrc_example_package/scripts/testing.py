@@ -71,7 +71,7 @@ def main():
 
     for i, pos in enumerate(img_plane):
         print(pos)
-        xyz = calculate_XYZ(pos, np.array(tvec), rmat, camera_params[0].camera_matrix)
+        xyz = calculate_XYZ(pos, tvec[:, np.newaxis], rmat, camera_params[0].camera_matrix)
         print(goal[i])
         print(xyz)
 
