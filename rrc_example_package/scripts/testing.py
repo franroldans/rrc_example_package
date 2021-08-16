@@ -62,9 +62,9 @@ def main():
         img_plane.append(proj_pos)
 
     for pos, i in enumerate(img_plane):
+        print(pos)
         xyz = calculate_XYZ(pos, tvec, rmat, camera_params[0].camera_matrix)
         print(goal[i])
-        print(pos)
         print(xyz)
 
 
