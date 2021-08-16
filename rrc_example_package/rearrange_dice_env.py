@@ -13,7 +13,7 @@ from trifinger_simulation.camera import load_camera_parameters
 from trifinger_object_tracking.py_lightblue_segmenter import segment_image
 
 
-CONFIG_DIR = pathlib.Path("/etc/trifingerpro")
+CONFIG_DIR = pathlib.Path("./")
 
 
 class ActionType(enum.Enum):
