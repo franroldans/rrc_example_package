@@ -12,6 +12,28 @@ from rrc_example_package import rearrange_dice_env
 from rrc_example_package.example import PointAtDieGoalPositionsPolicy
 import trifinger_simulation.tasks.rearrange_dice as task
 
+def groundProjectPoint(image_point, tvec, rotMat, camMat, z = 0.011):
+    camMat = np.asarray(camera_matrix)
+    iRot = np.linalg.inv(rotMat)
+    iCam = np.linalg.inv(camMat)
+
+    uvPoint = np.ones((3, 1))
+
+    # Image point
+    uvPoint[0, 0] = image_point[0]
+    uvPoint[1, 0] = image_point[1]
+
+    tempMat = np.matmul(np.matmul(iRot, iCam), uvPoint)
+    tempMat2 = np.matmul(iRot, tvec)
+
+    s = (z + tempMat2[2, 0]) / tempMat[2, 0]
+    wcPoint = np.matmul(iRot, (np.matmul(s * iCam, uvPoint) - tvec))
+
+    # wcPoint[2] will not be exactly equal to z, but very close to it
+    #assert int(abs(wcPoint[2] - z) * (10 ** 8)) == 0
+    wcPoint[2] = z
+
+    return wcPoint
 
 def calculate_XYZ(pos, tvec, rmat, camera_matrix):                          
     #Solve: From Image Pixels, find World Points
@@ -60,6 +82,7 @@ def main():
 
     for i, pos in enumerate(img_plane):
         xyz = calculate_XYZ(pos, tvec[:, np.newaxis], rmat, camera_params[0].camera_matrix)
+        xyz = groundProjectPoint(pos, tvec[:, np.newaxis], rmat, camera_params[0].camera_matrix)
         print(goal[i])
         print(xyz)
 
