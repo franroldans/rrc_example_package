@@ -47,10 +47,9 @@ def main():
     rmat = camera_params[0].tf_world_to_camera[:3, :3]
     rvec = Rotation.from_matrix(rmat).as_rotvec()
 
-
+    img_plane = []
     for pos in goal:
         #corners = _get_cell_corners_3d(pos)
-        img_plane = []
 
         # project corner points into the image
         proj_pos, _ = cv2.projectPoints(
@@ -63,6 +62,7 @@ def main():
         img_plane.append(proj_pos)
 
         print(img_plane)
+    print(img_plane[0])
 
     """for pos, i in enumerate(img_plane):
         print(pos)
