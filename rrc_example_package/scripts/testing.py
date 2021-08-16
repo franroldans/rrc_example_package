@@ -38,8 +38,8 @@ def main():
     goal = env.goal
     print(camera_params)
     print(goal)
-    masks = task.generate_goal_mask([camera_params], goal)
-    print(masks)
+    #masks = task.generate_goal_mask([camera_params], goal)
+    #print(masks)
 
     # get camera position and orientation separately
     tvec = camera_params.tf_world_to_camera[:3, 3]
