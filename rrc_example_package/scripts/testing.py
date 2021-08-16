@@ -17,15 +17,14 @@ def main():
 
     env = rearrange_dice_env.RealRobotRearrangeDiceEnv(
         rearrange_dice_env.ActionType.POSITION,
-        goal= task.sample_goal(),
+        goal= None,
         step_size=1,
     )
-    env.reset()
 
     camera_observation = env.platform.get_camera_observation(0)
 
-    print(camera_observation.shape)
-
+    for c in camera_observation.cameras:
+        print(c.image.shape)
     segmentation_masks = [
             segment_image(c.image) for c in camera_observation.cameras
         ]
