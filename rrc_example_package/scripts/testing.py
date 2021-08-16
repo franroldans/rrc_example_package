@@ -26,8 +26,9 @@ def main():
 
     camera_observation = env.platform.get_camera_observation(0)
 
-    for c in camera_observation.cameras:
-        print(c.image.shape)
+    for i, c in enumerate(camera_observation.cameras):
+        cv2.imwrite('test{}.png'.format(i), result)
+
     segmentation_masks = [
             segment_image(c.image) for c in camera_observation.cameras
         ]
