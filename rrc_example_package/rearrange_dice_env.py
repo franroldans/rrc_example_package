@@ -8,7 +8,7 @@ import numpy as np
 
 import robot_fingers
 import trifinger_simulation.tasks.rearrange_dice as task
-from trifinger_simulation import TriFingerPlatform, ObjectType
+from trifinger_simulation import TriFingerPlatform
 from trifinger_simulation import trifingerpro_limits
 from trifinger_simulation.camera import load_camera_parameters
 from trifinger_object_tracking.py_lightblue_segmenter import segment_image
@@ -34,7 +34,13 @@ class ActionType(enum.Enum):
     #: the position controller are added to the torques in the action before
     #: applying them to the robot.
     TORQUE_AND_POSITION = enum.auto()
+    
+class ObjectType(enum.Enum):
+    """Enumeration of supported object types."""
 
+    NONE = 0
+    COLORED_CUBE = 1
+    DICE = 2
 
 class RealRobotRearrangeDiceEnv(gym.GoalEnv):
     """Gym environment for rearranging dice with a TriFingerPro robot."""
