@@ -27,7 +27,7 @@ def groundProjectPoint(image_point, tvec, rotMat, camera_matrix, z = 0.011):
 
     s = (z + tempMat2[2, 0]) / tempMat[2, 0]
     wcPoint = np.matmul(iRot, (np.matmul(s * iCam, uvPoint) - tvec))
-    wcPoint[2] = z
+    wcPoint[2] = z #Hardcoded as z is always 0.011 for the default task
 
     return wcPoint
 
