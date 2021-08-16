@@ -48,6 +48,7 @@ def main():
 
     # get camera position and orientation separately
     tvec = camera_params[0].tf_world_to_camera[:3, 3]
+    print(tvec)
     rmat = camera_params[0].tf_world_to_camera[:3, :3]
     rvec = Rotation.from_matrix(rmat).as_rotvec()
 
