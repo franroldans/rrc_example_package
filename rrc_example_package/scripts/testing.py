@@ -20,6 +20,7 @@ def main():
         goal= None,
         step_size=1,
     )
+    env.reset()
 
     camera_observation = env.platform.get_camera_observation(0)
 
