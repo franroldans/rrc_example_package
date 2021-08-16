@@ -62,7 +62,6 @@ def main():
         img_plane.append(proj_pos)
 
     for i, pos in enumerate(img_plane):
-        xyz = calculate_XYZ(pos, tvec[:, np.newaxis], rmat, camera_params[0].camera_matrix)
         xyz = groundProjectPoint(pos, tvec[:, np.newaxis], rmat, camera_params[0].camera_matrix)
         print(goal[i])
         print(xyz)
