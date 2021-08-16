@@ -17,8 +17,8 @@ def main():
     #goal = json.loads(goal_json)
     goal = task.sample_goal()
     env = rearrange_dice_env.RealRobotRearrangeDiceEnv(
-        goal,
         rearrange_dice_env.ActionType.POSITION,
+        goal,
         step_size=1,
     )
 
