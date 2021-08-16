@@ -39,12 +39,12 @@ def main():
     print(camera_params)
     print(goal)
     masks = task.generate_goal_mask(camera_params, goal)
-    #print(masks)
+    print(masks)
 
     # get camera position and orientation separately
     tvec = camera_params[0].tf_world_to_camera[:3, 3]
     rmat = camera_params[0].tf_world_to_camera[:3, :3]
-    rvec = Rotation[0].from_matrix(rmat).as_rotvec()
+    rvec = Rotation.from_matrix(rmat).as_rotvec()
 
 
     for pos in goal:
