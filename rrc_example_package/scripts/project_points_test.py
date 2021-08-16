@@ -19,8 +19,8 @@ def groundProjectPoint(image_point, tvec, rotMat, camera_matrix, z = 0.011):
 
     uvPoint = np.ones((3, 1))
     # Image point
-    uvPoint[0, 0] = image_point[0][0][0]
-    uvPoint[1, 0] = image_point[0][0][1]
+    uvPoint[0, 0] = image_point[0]
+    uvPoint[1, 0] = image_point[1]
 
     tempMat = np.matmul(np.matmul(iRot, iCam), uvPoint)
     tempMat2 = np.matmul(iRot, tvec)
@@ -62,7 +62,7 @@ def main():
         img_plane.append(proj_pos)
 
     for i, pos in enumerate(img_plane):
-        xyz = groundProjectPoint(pos, tvec[:, np.newaxis], rmat, camera_params[0].camera_matrix)
+        xyz = groundProjectPoint(pos[0][0], tvec[:, np.newaxis], rmat, camera_params[0].camera_matrix)
         print(goal[i])
         print(xyz)
 
