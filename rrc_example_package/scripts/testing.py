@@ -7,6 +7,7 @@ import sys
 import numpy as np
 import cv2
 from scipy.spatial.transform import Rotation
+import imutils
 
 from rrc_example_package import rearrange_dice_env
 from rrc_example_package.example import PointAtDieGoalPositionsPolicy
