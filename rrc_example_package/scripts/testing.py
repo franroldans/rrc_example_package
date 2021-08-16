@@ -33,7 +33,7 @@ def main():
             segment_image(c.image) for c in camera_observation.cameras
         ]"""
 
-    segmentation_masks = np.load('masks.py')
+    segmentation_masks = np.load('masks.npy')
     cnts = cv2.findContours(segmentation_masks[0].copy(), cv2.RETR_EXTERNAL,
         cv2.CHAIN_APPROX_SIMPLE)
     cnts = imutils.grab_contours(cnts)
