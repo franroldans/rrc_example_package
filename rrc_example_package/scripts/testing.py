@@ -14,7 +14,8 @@ import trifinger_simulation.tasks.rearrange_dice as task
 
 
 def calculate_XYZ(pos, tvec, rmat, camera_matrix):
-                                      
+    print("Printing tvec:")
+    print(tvec.shape)                                  
     #Solve: From Image Pixels, find World Points
     scalingfactor = 1 / camera_matrix[2, 2]
     uv_1=np.array([[pos[0][0][0],pos[0][0][1],1]], dtype=np.float32)
@@ -48,7 +49,6 @@ def main():
 
     # get camera position and orientation separately
     tvec = camera_params[0].tf_world_to_camera[:3, 3]
-    print(tvec)
     rmat = camera_params[0].tf_world_to_camera[:3, :3]
     rvec = Rotation.from_matrix(rmat).as_rotvec()
 
