@@ -30,7 +30,7 @@ def calculate_XYZ(pos, tvec, rmat, camera_matrix):
     print(inverse_r_mtx.shape)
     xyz_c=inverse_cam_mtx.dot(suv_1)
     print(xyz_c.shape)
-    xyz_c=xyz_c-tvec
+    xyz_c=xyz_c-tvec.T
     XYZ=inverse_r_mtx.dot(xyz_c)
     print(XYZ.shape)
     return XYZ
