@@ -12,28 +12,6 @@ from rrc_example_package import rearrange_dice_env
 from rrc_example_package.example import PointAtDieGoalPositionsPolicy
 import trifinger_simulation.tasks.rearrange_dice as task
 
-def _get_cell_corners_3d(
-    pos: Position,
-) -> np.ndarray:
-    """Get 3d positions of the corners of the cell at the given position."""
-    d = DIE_WIDTH / 2
-    nppos = np.asarray(pos)
-
-    # order of the corners is the same as in the cube model of the
-    # trifinger_object_tracking package
-    # people.tue.mpg.de/mpi-is-software/robotfingers/docs/trifinger_object_tracking/doc/cube_model.html
-    return np.array(
-        (
-            nppos + (d, -d, d),
-            nppos + (d, d, d),
-            nppos + (-d, d, d),
-            nppos + (-d, -d, d),
-            nppos + (d, -d, -d),
-            nppos + (d, d, -d),
-            nppos + (-d, d, -d),
-            nppos + (-d, -d, -d),
-        )
-    )
 
 def calculate_XYZ(pos, tvec, rmat, camera_matrix):
                                       
@@ -85,6 +63,7 @@ def main():
 
     for pos in img_plane:
         xyz = calculate_XYZ(pos, tvec, rmat, camera_params.camera_matrix)
+        print(xyz)
 
 
 
