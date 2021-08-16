@@ -60,9 +60,7 @@ def main():
             camera_params[0].distortion_coefficients,
         )
         img_plane.append(proj_pos)
-
-        print(img_plane)
-    print(img_plane[0])
+    print(img_plane[0][0])
 
     """for pos, i in enumerate(img_plane):
         print(pos)
