@@ -11,8 +11,9 @@ from rrc_example_package.example import PointAtDieGoalPositionsPolicy
 
 def main():
 
-    env = rearrange_dice_env.RealRobotRearrangeDiceEnv(goal=None,
+    env = rearrange_dice_env.RealRobotRearrangeDiceEnv(
         rearrange_dice_env.ActionType.POSITION,
+        goal=None,
         step_size=1,
     )
     camera_params = env.camera_params
