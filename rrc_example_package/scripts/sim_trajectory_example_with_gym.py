@@ -12,7 +12,7 @@ def main():
     env = cube_trajectory_env.SimCubeTrajectoryEnv(
         goal_trajectory=None,  # passing None to sample a random trajectory
         action_type=cube_trajectory_env.ActionType.POSITION,
-        visualization=True,
+        visualization=False,
     )
 
     is_done = False
