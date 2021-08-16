@@ -40,6 +40,7 @@ def main():
     print(goal)
     masks = task.generate_goal_mask(camera_params, goal)
     print(masks)
+    np.save('masks.npy', masks)
 
     # get camera position and orientation separately
     tvec = camera_params[0].tf_world_to_camera[:3, 3]
@@ -61,11 +62,13 @@ def main():
         )
         img_plane.append(proj_pos)
 
-    for pos, i in enumerate(img_plane):
+        print(img_plane)
+
+    """for pos, i in enumerate(img_plane):
         print(pos)
         xyz = calculate_XYZ(pos, tvec, rmat, camera_params[0].camera_matrix)
         print(goal[i])
-        print(xyz)
+        print(xyz)"""
 
 
 
