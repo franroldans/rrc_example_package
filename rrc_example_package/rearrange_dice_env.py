@@ -271,7 +271,11 @@ class RealRobotRearrangeDiceEnv(gym.GoalEnv):
         if self.platform is not None:
             raise RuntimeError("Once started, this environment cannot be reset.")
 
-        self.platform = robot_fingers.TriFingerPlatformFrontend()
+        self.platform = trifinger_simulation.TriFingerPlatform(
+            visualization=False,
+            enable_cameras=True
+        )
+
 
         # if no goal is given, sample one randomly
         if self.goal is None:
