@@ -17,7 +17,7 @@ def calculate_XYZ(pos, tvec, rmat, camera_matrix):
                                       
     #Solve: From Image Pixels, find World Points
     scalingfactor = 1 / camera_matrix[2, 2]
-    uv_1=np.array([[pos[0][0][0],pos[0][0][1],1]], dtype=np.float32)
+    uv_1=np.array([[pos[0][0],pos[0][1],1]], dtype=np.float32)
     uv_1=uv_1.T
     suv_1=scalingfactor*uv_1
     inverse_cam_mtx =  np.linalg.inv(camera_matrix)
