@@ -8,7 +8,7 @@ import numpy as np
 
 import robot_fingers
 import trifinger_simulation.tasks.rearrange_dice as task
-from trifinger_simulation import TriFingerPlatform
+from trifinger_simulation import TriFingerPlatform, ObjectType
 from trifinger_simulation import trifingerpro_limits
 from trifinger_simulation.camera import load_camera_parameters
 from trifinger_object_tracking.py_lightblue_segmenter import segment_image
@@ -274,7 +274,8 @@ class RealRobotRearrangeDiceEnv(gym.GoalEnv):
 
         self.platform = TriFingerPlatform(
             visualization=False,
-            enable_cameras=True
+            enable_cameras=True,
+            object_type=ObjectType.DICE
         )
 
 
