@@ -28,7 +28,9 @@ def main():
 
     for i, c in enumerate(camera_observation.cameras):
         cv2.imwrite('test{}.png'.format(i), c.image)
-        copy = c.image.copy()
+        mult = copy * segment_image(c.image)
+        copy = mult.copy()
+        #mult = copy * segment_image(c.image)
         grey = cv2.cvtColor(c.image, cv2.COLOR_BGR2GRAY)
         decrease_noise = cv2.fastNlMeansDenoising(grey, 10, 15, 7, 21)
         blurred = cv2.GaussianBlur(decrease_noise, (3, 3), 0)
