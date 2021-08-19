@@ -26,18 +26,18 @@ def main():
 
     camera_observation = env.platform.get_camera_observation(0)
 
-    """ for i, c in enumerate(camera_observation.cameras):
+     for i, c in enumerate(camera_observation.cameras):
         cv2.imwrite('test{}.png'.format(i), c.image)
         cv2.imwrite('seg{}.png'.format(i),segment_image(c.image)*255)
-        print(type(c.image))
-        print(type(segment_image(c.image)))
-        print(segment_image(c.image).max())
+        #print(type(c.image))
+        #print(type(segment_image(c.image)))
+        #print(segment_image(c.image).max())
         #mult = cv2.multiply(c.image, segment_image(c.image)[:,:, np.newaxis])
         #cv2.imwrite('mult{}.png'.format(i), mult)
         copy = c.image.copy()
         #mult = copy * segment_image(c.image)
         grey = cv2.cvtColor(c.image, cv2.COLOR_BGR2GRAY)
-        grey = grey * segment_image(c.image)
+        grey = grey * segment_image(cv2.cvtColor(c.image, cv2.COLOR_RGB2BGR))
         cv2.imwrite('grey{}.png'.format(i), grey)
         decrease_noise = cv2.fastNlMeansDenoising(grey, 10, 15, 7, 21)
         blurred = cv2.GaussianBlur(decrease_noise, (3, 3), 0)
@@ -53,9 +53,9 @@ def main():
             # With the bounding rectangle coordinates we draw the green bounding boxes
             cv2.rectangle(copy, (x, y), (x + w, y + h), (36, 255, 12), 2)
         id = i + 10
-        cv2.imwrite('test{}.png'.format(id), copy)"""
+        cv2.imwrite('test{}.png'.format(id), copy)
 
-    segmentation_masks = [
+    """segmentation_masks = [
             segment_image( cv2.cvtColor(c.image, cv2.COLOR_RGB2BGR)) for c in camera_observation.cameras
         ]
 
@@ -85,7 +85,7 @@ def main():
         cv2.imwrite('test{}.png'.format(id), result)
 
     #masks = task.generate_goal_mask(camera_params, goal)
-    #np.save('masks.npy', masks)
+    #np.save('masks.npy', masks)"""
 
 if __name__ == "__main__":
     main()
