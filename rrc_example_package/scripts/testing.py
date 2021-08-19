@@ -28,7 +28,7 @@ def main():
 
     for i, c in enumerate(camera_observation.cameras):
         cv2.imwrite('test{}.png'.format(i), c.image)
-        mult = c.image * segment_image(c.image)[:,:, np.newaxis]
+        mult = cv2.multiply(c.image, segment_image(c.image)[:,:, np.newaxis])
         cv2.imwrite('mult{}.png'.format(i), mult)
         copy = mult.copy()
         #mult = copy * segment_image(c.image)
@@ -46,6 +46,7 @@ def main():
             x, y, w, h = cv2.boundingRect(c)
             # With the bounding rectangle coordinates we draw the green bounding boxes
             cv2.rectangle(copy, (x, y), (x + w, y + h), (36, 255, 12), 2)
+        id = i + 10
         cv2.imwrite('test{}.png'.format(id), copy)
 
     """segmentation_masks = [
