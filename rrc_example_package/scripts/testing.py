@@ -29,6 +29,9 @@ def main():
     for i, c in enumerate(camera_observation.cameras):
         cv2.imwrite('test{}.png'.format(i), c.image)
         cv2.imwrite('seg{}.png'.format(i),segment_image(c.image)*255)
+        print(type(c.image))
+        print(type(segment_image(c.image)))
+        print(max(segment_image(c.image)))
         #mult = cv2.multiply(c.image, segment_image(c.image)[:,:, np.newaxis])
         #cv2.imwrite('mult{}.png'.format(i), mult)
         copy = c.image.copy()
