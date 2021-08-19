@@ -26,7 +26,7 @@ def main():
 
     camera_observation = env.platform.get_camera_observation(0)
 
-    for i, c in enumerate(camera_observation.cameras):
+   """ for i, c in enumerate(camera_observation.cameras):
         cv2.imwrite('test{}.png'.format(i), c.image)
         cv2.imwrite('seg{}.png'.format(i),segment_image(c.image)*255)
         print(type(c.image))
@@ -53,14 +53,15 @@ def main():
             # With the bounding rectangle coordinates we draw the green bounding boxes
             cv2.rectangle(copy, (x, y), (x + w, y + h), (36, 255, 12), 2)
         id = i + 10
-        cv2.imwrite('test{}.png'.format(id), copy)
+        cv2.imwrite('test{}.png'.format(id), copy)"""
 
-    """segmentation_masks = [
+    segmentation_masks = [
             segment_image(c.image) for c in camera_observation.cameras
         ]
 
     #segmentation_masks = np.load('masks.npy')
     for idx, mask in enumerate(segmentation_masks):
+        print(mask.max())
         cnts = cv2.findContours(mask.copy(), cv2.RETR_EXTERNAL,
             cv2.CHAIN_APPROX_SIMPLE)
         cnts = imutils.grab_contours(cnts)
@@ -81,7 +82,7 @@ def main():
             # draw rotated rectangle on copy of img
             cv2.drawContours(result,[box],0,(255,0,0),2)
         id = idx + 10
-        cv2.imwrite('test{}.png'.format(id), result)"""
+        cv2.imwrite('test{}.png'.format(id), result)
 
     #masks = task.generate_goal_mask(camera_params, goal)
     #np.save('masks.npy', masks)
