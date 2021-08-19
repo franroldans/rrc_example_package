@@ -28,8 +28,24 @@ def main():
 
     for i, c in enumerate(camera_observation.cameras):
         cv2.imwrite('test{}.png'.format(i), c.image)
+        copy = c.image.copy()
+        grey = cv.cvtColor(c.image, cv.COLOR_BGR2GRAY)
+        decrease_noise = cv.fastNlMeansDenoising(grey, 10, 15, 7, 21)
+        blurred = cv.GaussianBlur(decrease_noise, (3, 3), 0)
+        canny = cv.Canny(blurred, 20, 40)
+        thresh = cv.threshold(canny, 0, 255, cv.THRESH_OTSU + cv.THRESH_BINARY)[1]
+        contours = cv.findContours(thresh, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_SIMPLE)
 
-    segmentation_masks = [
+        contours = contours[0] if len(contours) == 2 else contours[1]
+
+        for c in contours:
+            # obtain the bounding rectangle coordinates for each square
+            x, y, w, h = cv.boundingRect(c)
+            # With the bounding rectangle coordinates we draw the green bounding boxes
+            cv.rectangle(copy, (x, y), (x + w, y + h), (36, 255, 12), 2)
+        cv2.imwrite('test{}.png'.format(id), copy)
+
+    """segmentation_masks = [
             segment_image(c.image) for c in camera_observation.cameras
         ]
 
@@ -55,7 +71,7 @@ def main():
             # draw rotated rectangle on copy of img
             cv2.drawContours(result,[box],0,(255,0,0),2)
         id = idx + 10
-        cv2.imwrite('test{}.png'.format(id), result)
+        cv2.imwrite('test{}.png'.format(id), result)"""
 
     #masks = task.generate_goal_mask(camera_params, goal)
     #np.save('masks.npy', masks)
