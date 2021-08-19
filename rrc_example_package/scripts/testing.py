@@ -17,7 +17,7 @@ from trifinger_object_tracking.py_lightblue_segmenter import segment_image
 
 def main():
 
-    """env = rearrange_dice_env.RealRobotRearrangeDiceEnv(
+    env = rearrange_dice_env.RealRobotRearrangeDiceEnv(
         rearrange_dice_env.ActionType.POSITION,
         goal= None,
         step_size=1,
@@ -31,7 +31,7 @@ def main():
 
     segmentation_masks = [
             segment_image(c.image) for c in camera_observation.cameras
-        ]"""
+        ]
 
     segmentation_masks = np.load('masks.npy')
     cnts = cv2.findContours(segmentation_masks[0].copy(), cv2.RETR_EXTERNAL,
