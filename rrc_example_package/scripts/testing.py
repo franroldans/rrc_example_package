@@ -34,7 +34,7 @@ def main():
         ]
 
     #segmentation_masks = np.load('masks.npy')
-    for idx, mask in enumerate(segmentation masks):
+    for idx, mask in enumerate(segmentation_masks):
         cnts = cv2.findContours(mask.copy(), cv2.RETR_EXTERNAL,
             cv2.CHAIN_APPROX_SIMPLE)
         cnts = imutils.grab_contours(cnts)
