@@ -29,12 +29,12 @@ def main():
     for i, c in enumerate(camera_observation.cameras):
         cv2.imwrite('test{}.png'.format(i), c.image)
         copy = c.image.copy()
-        grey = cv.cvtColor(c.image, cv.COLOR_BGR2GRAY)
-        decrease_noise = cv.fastNlMeansDenoising(grey, 10, 15, 7, 21)
-        blurred = cv.GaussianBlur(decrease_noise, (3, 3), 0)
-        canny = cv.Canny(blurred, 20, 40)
-        thresh = cv.threshold(canny, 0, 255, cv.THRESH_OTSU + cv.THRESH_BINARY)[1]
-        contours = cv.findContours(thresh, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_SIMPLE)
+        grey = cv2.cvtColor(c.image, cv.COLOR_BGR2GRAY)
+        decrease_noise = cv2.fastNlMeansDenoising(grey, 10, 15, 7, 21)
+        blurred = cv2.GaussianBlur(decrease_noise, (3, 3), 0)
+        canny = cv2.Canny(blurred, 20, 40)
+        thresh = cv2.threshold(canny, 0, 255, cv.THRESH_OTSU + cv.THRESH_BINARY)[1]
+        contours = cv2.findContours(thresh, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_SIMPLE)
 
         contours = contours[0] if len(contours) == 2 else contours[1]
 
