@@ -31,7 +31,7 @@ def main():
         cv2.imwrite('seg{}.png'.format(i),segment_image(c.image)*255)
         print(type(c.image))
         print(type(segment_image(c.image)))
-        print(segment_image(c.image)[0])
+        print(segment_image(c.image).max())
         #mult = cv2.multiply(c.image, segment_image(c.image)[:,:, np.newaxis])
         #cv2.imwrite('mult{}.png'.format(i), mult)
         copy = c.image.copy()
