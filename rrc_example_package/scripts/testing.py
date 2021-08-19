@@ -28,7 +28,7 @@ def main():
 
     for i, c in enumerate(camera_observation.cameras):
         cv2.imwrite('test{}.png'.format(i), c.image)
-        mult = c.image * segment_image(c.image)
+        mult = np.multiply(c.image, segment_image(c.image))
         copy = mult.copy()
         #mult = copy * segment_image(c.image)
         grey = cv2.cvtColor(c.image, cv2.COLOR_BGR2GRAY)
