@@ -36,8 +36,6 @@ class ActionType(enum.Enum):
     TORQUE_AND_POSITION = enum.auto()
     
 """class ObjectType(enum.Enum):
-    """Enumeration of supported object types."""
-
     NONE = 0
     COLORED_CUBE = 1
     DICE = 2"""
