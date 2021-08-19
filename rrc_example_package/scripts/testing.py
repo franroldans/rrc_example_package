@@ -56,7 +56,7 @@ def main():
         cv2.imwrite('test{}.png'.format(id), copy)"""
 
     segmentation_masks = [
-            segment_image(c.image) for c in camera_observation.cameras
+            segment_image( cv2.cvtColor(c.image, cv2.COLOR_RGB2BGR)) for c in camera_observation.cameras
         ]
 
     #segmentation_masks = np.load('masks.npy')
