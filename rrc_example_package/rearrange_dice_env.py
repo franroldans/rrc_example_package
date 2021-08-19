@@ -35,12 +35,12 @@ class ActionType(enum.Enum):
     #: applying them to the robot.
     TORQUE_AND_POSITION = enum.auto()
     
-class ObjectType(enum.Enum):
+"""class ObjectType(enum.Enum):
     """Enumeration of supported object types."""
 
     NONE = 0
     COLORED_CUBE = 1
-    DICE = 2
+    DICE = 2"""
 
 class RealRobotRearrangeDiceEnv(gym.GoalEnv):
     """Gym environment for rearranging dice with a TriFingerPro robot."""
@@ -281,7 +281,7 @@ class RealRobotRearrangeDiceEnv(gym.GoalEnv):
         self.platform = TriFingerPlatform(
             visualization=False,
             enable_cameras=True,
-            object_type=ObjectType.DICE
+            object_type=2
         )
 
 
