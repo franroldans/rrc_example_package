@@ -40,9 +40,9 @@ def main():
 
         for c in contours:
             # obtain the bounding rectangle coordinates for each square
-            x, y, w, h = cv.boundingRect(c)
+            x, y, w, h = cv2.boundingRect(c)
             # With the bounding rectangle coordinates we draw the green bounding boxes
-            cv.rectangle(copy, (x, y), (x + w, y + h), (36, 255, 12), 2)
+            cv2.rectangle(copy, (x, y), (x + w, y + h), (36, 255, 12), 2)
         cv2.imwrite('test{}.png'.format(id), copy)
 
     """segmentation_masks = [
