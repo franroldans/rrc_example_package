@@ -46,7 +46,7 @@ def main():
             cY = int(M["m01"] / M["m00"])
 
 
-        result = segmentation_masks[0].copy()
+        result = mask.copy()
         for c in cnts:
             # get rotated rectangle from contour
             rot_rect = cv2.minAreaRect(c)
