@@ -41,7 +41,7 @@ def main():
         cv2.imwrite('grey{}.png'.format(i), grey)
         decrease_noise = cv2.fastNlMeansDenoising(grey, 10, 15, 7, 21)
         blurred = cv2.GaussianBlur(decrease_noise, (3, 3), 0)
-        canny = cv2.Canny(blurred, 20, 40)
+        canny = cv2.Canny(blurred, 10, 30)
         thresh = cv2.threshold(canny, 0, 255, cv2.THRESH_OTSU + cv2.THRESH_BINARY)[1]
         contours = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
