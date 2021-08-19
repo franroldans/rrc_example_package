@@ -43,7 +43,9 @@ def main():
         blurred = cv2.GaussianBlur(decrease_noise, (3, 3), 0)
         canny = cv2.Canny(blurred, 10, 30)
         thresh = cv2.threshold(canny, 0, 255, cv2.THRESH_OTSU + cv2.THRESH_BINARY)[1]
-        thresh = cv2.erode(thresh, None, iterations=1)
+        # Creating kernel
+        kernel = np.ones((5, 5), np.uint8)
+        thresh = cv2.erode(thresh, kernel, iterations=1)
         contours = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
         contours = contours[0] if len(contours) == 2 else contours[1]
