@@ -7,16 +7,31 @@ import imutils
 import torchvision.models as models
 import torch
 
-from rrc_example_package import rearrange_dice_env
+from rrc_exe_package import rearrange_dice_env
+from rrc_example_package.example import PointAtDieGoalPositionsPolicy
 import trifinger_simulation.tasks.rearrange_dice as task
 from trifinger_object_tracking.py_lightblue_segmenter import segment_image
 
 
-def create_model():
-	resnet = models.resnet18(pretrained=False)
-	print(resnet)
-	newmodel = torch.nn.Sequential(*(list(resnet.children())[:-1]))
-	print(newmodel)
+class ResNet(nn.Module):
+
+
+    def __init__(self):
+
+		resnet = models.resnet18(pretrained=False)
+		print(resnet)
+		self.newmodel = torch.nn.Sequential(*(list(model.children())[:-1]))
+		print(newmodel)
+		self.fc = torch.nn.Linear(1000, 3*25)
+
+	def forward(self, x):
+		x = self.newmodel(x)
+		x = torch.flatten(x, 1)
+		out = self.fc(x)
+		return x
+	
+
+
 
 def generate_batch(batch_size):
 	batch = np.ones((batch_size, 270, 270, 3))
@@ -31,5 +46,7 @@ def generate_batch(batch_size):
 		batch[i] = seg_mask
 	return batch
 
+
+
+resnet = ResNet()
 batch = generate_batch(64)
-create_model()
