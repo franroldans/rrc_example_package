@@ -13,7 +13,7 @@ from trifinger_object_tracking.py_lightblue_segmenter import segment_image
 
 
 
-lass ResNet(torch.nn.Module):
+class ResNet(torch.nn.Module):
 
 
 	def __init__(self, resnet):
