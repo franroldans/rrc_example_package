@@ -33,7 +33,7 @@ env = rearrange_dice_env.RealRobotRearrangeDiceEnv(
         goal= None,
         step_size=1,
     )
-    env.reset()
+env.reset()
 
 batch = generate_batch(env, 64)
 create_model()
