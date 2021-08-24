@@ -15,7 +15,7 @@ from trifinger_object_tracking.py_lightblue_segmenter import segment_image
 def create_model():
 	resnet = models.resnet18(pretrained=False)
 	print(resnet)
-	newmodel = torch.nn.Sequential(*(list(model.children())[:-1]))
+	newmodel = torch.nn.Sequential(*(list(resnet.children())[:-1]))
 	print(newmodel)
 
 def generate_batch(batch_size):
