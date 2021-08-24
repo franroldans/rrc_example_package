@@ -273,8 +273,8 @@ class RealRobotRearrangeDiceEnv(gym.GoalEnv):
 
     def reset(self):
         # cannot reset multiple times
-        if self.platform is not None:
-            raise RuntimeError("Once started, this environment cannot be reset.")
+        #if self.platform is not None:
+        #    raise RuntimeError("Once started, this environment cannot be reset.")
 
         self.platform = TriFingerPlatform(
             visualization=False,
