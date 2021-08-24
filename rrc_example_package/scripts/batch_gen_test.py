@@ -21,7 +21,7 @@ def create_model():
 def generate_batch(env, batch_size):
 	batch = np.ones((batch_size, 270, 270, 3))
 	for i in range(batch_size):
-		seg_mask = np.ones((270, 2270, 3))
+		seg_mask = np.ones((270, 270, 3))
 		env.reset()
 		obs = env.platform.get_camera_observation(0)
 		for idx, c in enumerate(obs.cameras):
