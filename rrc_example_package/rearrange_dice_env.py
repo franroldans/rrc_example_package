@@ -77,7 +77,7 @@ class RealRobotRearrangeDiceEnv(gym.GoalEnv):
 
         # load camera parameters
         self.camera_params = load_camera_parameters(
-            CONFIG_DIR, "camera{id}_cropped_and_downsampled.yml"
+            CONFIG_DIR, "camera{id}.yml"
         )
 
         # Create the action and observation spaces
