@@ -15,15 +15,12 @@ from trifinger_object_tracking.py_lightblue_segmenter import segment_image
 class ResNet(torch.nn.Module):
 
 
-	def __init__(self):
-		resnet = models.resnet18(pretrained=False)
-		print(resnet)
-		self.newmodel = torch.nn.Sequential(*(list(resnet.children())[:-1]))
-		print(newmodel)
+	def __init__(self, resnet):
+		self.resnet = resnet
 		self.fc = torch.nn.Linear(1000, 3*25)
 
 	def forward(self, x):
-		x = self.newmodel(x)
+		x = self.resnet(x)
 		x = torch.flatten(x, 1)
 		out = self.fc(x)
 		return x
@@ -45,6 +42,8 @@ def generate_batch(batch_size):
 	return batch
 
 
-
-resnet = ResNet()
+resnet = models.resnet18(pretrained=False)
+newmodel = torch.nn.Sequential(*(list(resnet.children())[:-1]))
+print(newmodel)
+resnet = ResNet(newmodel)
 batch = generate_batch(64)
