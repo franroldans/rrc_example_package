@@ -13,23 +13,22 @@ from trifinger_object_tracking.py_lightblue_segmenter import segment_image
 
 
 
-class ResNet(nn.Module):
+lass ResNet(torch.nn.Module):
 
 
-    def __init__(self):
-
-		resnet = models.resnet18(pretrained=False)
-		print(resnet)
-		self.newmodel = torch.nn.Sequential(*(list(model.children())[:-1]))
-		print(newmodel)
+	def __init__(self, resnet):
+		super(ResNet, self).__init__()
+		self.resnet = resnet
 		self.fc = torch.nn.Linear(1000, 3*25)
 
 	def forward(self, x):
-		x = self.newmodel(x)
+		x = self.resnet(x)
 		x = torch.flatten(x, 1)
 		out = self.fc(x)
 		return x
 	
+
+
 
 
 
