@@ -18,7 +18,7 @@ def generate_batch(env, batch_size):
 		segmentation_masks = np.array([
             segment_image(c.image) for c in camera_observation.cameras
         ])
-        batch[i] = segmentations_masks
+                batch[i] = segmentations_masks
     return batch
 
 
