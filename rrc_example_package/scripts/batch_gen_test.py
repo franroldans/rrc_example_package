@@ -18,11 +18,10 @@ def create_model():
 	newmodel = torch.nn.Sequential(*(list(model.children())[:-1]))
 	print(newmodel)
 
-def generate_batch(batch_size):
+def generate_batch(env, batch_size):
 	batch = np.ones((batch_size, 270, 270, 3))
 	for i in range(batch_size):
 		seg_mask = np.ones((270, 270, 3))
-		env = rearrange_dice_env.RealRobotRearrangeDiceEnv(rearrange_dice_env.ActionType.POSITION,goal= None,step_size=1,)
 		env.reset()
 		obs = env.platform.get_camera_observation(0)
 		for idx, c in enumerate(obs.cameras):
@@ -31,5 +30,6 @@ def generate_batch(batch_size):
 		batch[i] = seg_mask
 	return batch
 
-batch = generate_batch(64)
+env = rearrange_dice_env.RealRobotRearrangeDiceEnv(rearrange_dice_env.ActionType.POSITION,goal= None,step_size=1,)
+batch = generate_batch(env, 64)
 create_model()
