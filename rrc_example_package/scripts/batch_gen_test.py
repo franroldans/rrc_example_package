@@ -12,7 +12,7 @@ import trifinger_simulation.tasks.rearrange_dice as task
 from trifinger_object_tracking.py_lightblue_segmenter import segment_image
 
 
-class ResNet(nn.Module):
+class ResNet(torch.nn.Module):
 
 
 	def __init__(self):
