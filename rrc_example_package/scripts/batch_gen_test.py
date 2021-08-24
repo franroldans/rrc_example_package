@@ -16,7 +16,7 @@ class ResNet(torch.nn.Module):
 
 
 	def __init__(self, resnet):
-		super(Model, self).__init__()
+		super(ResNet, self).__init__()
 		self.resnet = resnet
 		self.fc = torch.nn.Linear(1000, 3*25)
 
