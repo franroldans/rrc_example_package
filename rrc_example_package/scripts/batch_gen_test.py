@@ -3,6 +3,7 @@ import numpy as np
 import cv2
 from scipy.spatial.transform import Rotation
 import imutils
+import itertools
 
 import torchvision.models as models
 import torch
@@ -51,7 +52,7 @@ def generate_batch(env, batch_size):
 	for i in range(batch_size):
 		seg_mask = np.ones((270, 270, 3))
 		g = task.sample_goal()
-		goal = np.array(list(g))
+		goal = np.array(list(itertools.chain(*g)))
 		goals[i] = goal
 		for idx, c in enumerate(env.camera_params):
 			seg_mask[:,:,idx] = task.generate_goal_mask(c, g)
