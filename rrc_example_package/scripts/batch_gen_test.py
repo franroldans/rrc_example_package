@@ -27,7 +27,7 @@ def generate_batch(env, batch_size):
 		for idx, c in enumerate(obs.cameras):
 			seg_mask[:, :, idx]  = segment_image(cv2.cvtColor(c.image, cv2.COLOR_RGB2BGR)) 
 		#segmentation_masks = np.array([segment_image(cv2.cvtColor(c.image, cv2.COLOR_RGB2BGR)) for c in obs.cameras])
-		batch[i] = segmentation_masks
+		batch[i] = seg_mask
 	return batch
 
 env = rearrange_dice_env.RealRobotRearrangeDiceEnv(
