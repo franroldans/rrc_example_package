@@ -18,7 +18,7 @@ class ResNet(torch.nn.Module):
 	def __init__(self):
 		resnet = models.resnet18(pretrained=False)
 		print(resnet)
-		self.newmodel = torch.nn.Sequential(*(list(model.children())[:-1]))
+		self.newmodel = torch.nn.Sequential(*(list(resnet.children())[:-1]))
 		print(newmodel)
 		self.fc = torch.nn.Linear(1000, 3*25)
 
