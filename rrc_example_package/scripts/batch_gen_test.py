@@ -59,7 +59,10 @@ def generate_batch(env, batch_size):
 		batch[i] = seg_mask
 	return batch
 
-resnet = ResNet()
+
+resnet = models.resnet18(pretrained=False)
+newmodel = torch.nn.Sequential(*(list(resnet.children())[:-1]))
+resnet = ResNet(newmodel)
 env = rearrange_dice_env.RealRobotRearrangeDiceEnv(rearrange_dice_env.ActionType.POSITION,goal= None,step_size=1,)
 env.reset()
 batch = generate_batch(env, 64)
