@@ -23,7 +23,7 @@ def generate_batch(env, batch_size):
 	for i in range(batch_size):
 		env.reset()
 		obs = env.platform.get_camera_observation(0)
-		segmentation_masks = np.array([segment_image(c.image) for c in camera_observation.cameras])
+		segmentation_masks = np.array([segment_image(c.image) for c in obs.cameras])
 		batch[i] = segmentations_masks
 	return batch
 
