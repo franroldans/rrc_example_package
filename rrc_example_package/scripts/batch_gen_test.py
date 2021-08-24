@@ -16,8 +16,7 @@ from trifinger_object_tracking.py_lightblue_segmenter import segment_image
 class ResNet(nn.Module):
 
 
-    def __init__(self):
-
+	def __init__(self):
 		resnet = models.resnet18(pretrained=False)
 		print(resnet)
 		self.newmodel = torch.nn.Sequential(*(list(model.children())[:-1]))
