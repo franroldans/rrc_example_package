@@ -165,7 +165,7 @@ while True:
     transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),])
 
     #input_batch = preprocess(input_batch)
-    out = resnet(input_batch)
+    out = resnet(input_batch.unsqueeze(0))
     cost = loss(out, goals)
     cost.backward()
     print("Loss: {}".format(loss))
