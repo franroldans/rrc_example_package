@@ -103,11 +103,11 @@ def generate_goal_mask(camera_parameters, goal):
     """
     #masks = []
     #for cam in camera_parameters:
-    mask = np.zeros((cam.image_height, cam.image_width), dtype=np.uint8)
+    mask = np.zeros((camera_parameters.image_height, camera_parameters.image_width), dtype=np.uint8)
 
     # get camera position and orientation separately
-    tvec = cam.tf_world_to_camera[:3, 3]
-    rmat = cam.tf_world_to_camera[:3, :3]
+    tvec = camera_parameters.tf_world_to_camera[:3, 3]
+    rmat = camera_parameters.tf_world_to_camera[:3, :3]
     rvec = Rotation.from_matrix(rmat).as_rotvec()
 
     for pos in goal:
