@@ -119,8 +119,8 @@ def generate_goal_mask(camera_parameters, goal):
             corners,
             rvec,
             tvec,
-            cam.camera_matrix,
-            cam.distortion_coefficients,
+            camera_parameters.camera_matrix,
+            camera_parameters.distortion_coefficients,
         )
 
         # draw faces in mask
