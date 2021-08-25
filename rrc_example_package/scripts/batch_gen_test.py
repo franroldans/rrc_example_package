@@ -164,7 +164,7 @@ while True:
     transforms.ToTensor(),
     transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),])
 
-    input_batch = preprocess(input_batch)
+    #input_batch = preprocess(input_batch)
     out = resnet(input_batch)
     cost = loss(out, goals)
     cost.backward()
