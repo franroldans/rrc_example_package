@@ -134,6 +134,7 @@ resnet = ResNet(newmodel)
 print(resnet.parameters())
 env = rearrange_dice_env.RealRobotRearrangeDiceEnv(rearrange_dice_env.ActionType.POSITION,goal= None,step_size=1,)
 env.reset()
+optim = torch.optim.Adam(filter(lambda p: p.requires_grad, resnet.parameters()), lr=0.001)
 while True:
 
     input_batch, goals = generate_batch(env, 8)
@@ -155,6 +156,7 @@ while True:
     out = resnet(input_batch)
     cost = loss(out, goals)
     cost.backward()
+    optim.step()
     print("Loss: {}".format(cost))
 
 
