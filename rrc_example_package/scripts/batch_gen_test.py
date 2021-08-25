@@ -152,6 +152,8 @@ env.reset()
 while True:
 
     input_batch, goals = generate_batch(env, 64)
+    input_batch = torch.from_numpy(input_batch)
+    goals = torch.from_numpy(input_batch)
     loss = torch.nn.MSELoss()
     if torch.cuda.is_available():
         input_batch = input_batch.to('cuda')
