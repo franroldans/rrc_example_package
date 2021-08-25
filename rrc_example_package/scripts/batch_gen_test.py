@@ -44,7 +44,7 @@ def generate_batch(env, batch_size):
 	batch = np.ones((batch_size, 3, 270, 270))
 	goals = np.ones((batch_size, 25 * 3))
 	for i in range(batch_size):
-		seg_mask = np.ones((3, 270, 170))
+		seg_mask = np.ones((3, 270, 270))
 		g = task.sample_goal()
 		goal = np.array(list(itertools.chain(*g)))
 		goals[i] = goal
