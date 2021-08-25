@@ -127,7 +127,7 @@ def generate_goal_mask(camera_parameters, goal):
 
     return mask
 
-resnet_ = models.resnet18(pretrained=True)
+resnet_ = models.resnet18(pretrained=False)
 newmodel = torch.nn.Sequential(*(list(resnet_.children())[:-1]))
 resnet = ResNet(newmodel)
 
