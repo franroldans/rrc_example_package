@@ -66,7 +66,7 @@ def generate_batch(env, batch_size):
 			seg_mask[:,:,idx] = generate_goal_mask(c, g)
 		#segmentation_masks = np.array([segment_image(cv2.cvtColor(c.image, cv2.COLOR_RGB2BGR)) for c in obs.cameras])
 		batch[i] = seg_mask
-	return batch
+	return batch, goals
 
 def get_cell_corners_3d(pos):
     """Get 3d positions of the corners of the cell at the given position."""
@@ -148,5 +148,5 @@ newmodel = torch.nn.Sequential(*(list(resnet.children())[:-1]))
 resnet = ResNet(newmodel)
 env = rearrange_dice_env.RealRobotRearrangeDiceEnv(rearrange_dice_env.ActionType.POSITION,goal= None,step_size=1,)
 env.reset()
-batch = generate_batch(env, 64)
+batch, goals = generate_batch(env, 64)
 #loss = nn.MSELoss()
