@@ -28,7 +28,7 @@ def main():
 
     for i, c in enumerate(camera_observation.cameras):
         cv2.imwrite('test{}.png'.format(i), c.image)
-        cv2.imwrite('seg{}.png'.format(i),segment_image(c.image)*255)
+        
         #print(type(c.image))
         #print(type(segment_image(c.image)))
         #print(segment_image(c.image).max())
@@ -39,6 +39,7 @@ def main():
         grey = cv2.cvtColor(c.image, cv2.COLOR_BGR2GRAY)
         grey = grey * segment_image(cv2.cvtColor(c.image, cv2.COLOR_RGB2BGR))
         cv2.imwrite('grey{}.png'.format(i), grey)
+        cv2.imwrite('seg{}.png'.format(i),segment_image(cv2.cvtColor(c.image, cv2.COLOR_RGB2BGR)))
         decrease_noise = cv2.fastNlMeansDenoising(grey, 10, 15, 7, 21)
         blurred = cv2.GaussianBlur(decrease_noise, (3, 3), 0)
         canny = cv2.Canny(blurred, 10, 30)
