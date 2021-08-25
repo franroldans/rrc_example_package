@@ -57,7 +57,7 @@ class ResNet(torch.nn.Module):
 	return batch"""
 
 def generate_batch(env, batch_size):
-	batch = np.ones((batch_size, 256, 256, 3))
+	batch = np.ones((batch_size, 3, 256, 256))
 	goals = np.ones((batch_size, 25 * 3))
 	for i in range(batch_size):
 		seg_mask = np.ones((3, 256, 256))
