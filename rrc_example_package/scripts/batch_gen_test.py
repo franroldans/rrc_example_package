@@ -172,6 +172,8 @@ while True:
 
     #input_batch = preprocess(input_batch)
     out = resnet(input_batch)
+    print(out.shape)
+    print(goals.shape)
     cost = loss(out, goals)
     cost.backward()
     print("Loss: {}".format(loss))
