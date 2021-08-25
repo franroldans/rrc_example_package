@@ -13,6 +13,14 @@ import trifinger_simulation.tasks.rearrange_dice as task
 from trifinger_object_tracking.py_lightblue_segmenter import segment_image
 
 
+FACE_CORNERS = (
+    (0, 1, 2, 3),
+    (4, 5, 1, 0),
+    (5, 6, 2, 1),
+    (7, 6, 2, 3),
+    (4, 7, 3, 0),
+    (4, 5, 6, 7),
+)
 
 class ResNet(torch.nn.Module):
 
