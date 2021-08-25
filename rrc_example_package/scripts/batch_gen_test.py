@@ -146,9 +146,11 @@ def generate_goal_mask(camera_parameters, goal):
 
     return mask
 
-resnet = models.resnet18(pretrained=False)
-newmodel = torch.nn.Sequential(*(list(resnet.children())[:-1]))
+resnet_ = models.resnet18(pretrained=False)
+newmodel = torch.nn.Sequential(*(list(resnet_.children())[:-1]))
 resnet = ResNet(newmodel)
+
+print(resnet)
 env = rearrange_dice_env.RealRobotRearrangeDiceEnv(rearrange_dice_env.ActionType.POSITION,goal= None,step_size=1,)
 env.reset()
 while True:
