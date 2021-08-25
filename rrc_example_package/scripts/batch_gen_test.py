@@ -101,38 +101,38 @@ def generate_goal_mask(camera_parameters, goal):
         List of masks.  The number and order of masks corresponds to the input
         ``camera_parameters``.
     """
-    masks = []
-    for cam in camera_parameters:
-        mask = np.zeros((cam.image_height, cam.image_width), dtype=np.uint8)
+    #masks = []
+    #for cam in camera_parameters:
+    mask = np.zeros((cam.image_height, cam.image_width), dtype=np.uint8)
 
-        # get camera position and orientation separately
-        tvec = cam.tf_world_to_camera[:3, 3]
-        rmat = cam.tf_world_to_camera[:3, :3]
-        rvec = Rotation.from_matrix(rmat).as_rotvec()
+    # get camera position and orientation separately
+    tvec = cam.tf_world_to_camera[:3, 3]
+    rmat = cam.tf_world_to_camera[:3, :3]
+    rvec = Rotation.from_matrix(rmat).as_rotvec()
 
-        for pos in goal:
-            corners = _get_cell_corners_3d(pos)
+    for pos in goal:
+        corners = _get_cell_corners_3d(pos)
 
-            # project corner points into the image
-            projected_corners, _ = cv2.projectPoints(
-                corners,
-                rvec,
-                tvec,
-                cam.camera_matrix,
-                cam.distortion_coefficients,
+        # project corner points into the image
+        projected_corners, _ = cv2.projectPoints(
+            corners,
+            rvec,
+            tvec,
+            cam.camera_matrix,
+            cam.distortion_coefficients,
+        )
+
+        # draw faces in mask
+        for face_corner_idx in FACE_CORNERS:
+            points = np.array(
+                [projected_corners[i] for i in face_corner_idx],
+                dtype=np.int32,
             )
+            mask = cv2.fillConvexPoly(mask, points, 255)
 
-            # draw faces in mask
-            for face_corner_idx in FACE_CORNERS:
-                points = np.array(
-                    [projected_corners[i] for i in face_corner_idx],
-                    dtype=np.int32,
-                )
-                mask = cv2.fillConvexPoly(mask, points, 255)
+        #masks.append(mask)
 
-        masks.append(mask)
-
-    return masks
+    return mask
 
 resnet = models.resnet18(pretrained=False)
 newmodel = torch.nn.Sequential(*(list(resnet.children())[:-1]))
