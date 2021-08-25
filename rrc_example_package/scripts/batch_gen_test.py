@@ -7,6 +7,7 @@ import itertools
 
 import torchvision.models as models
 import torch
+from torchvision import transforms
 
 from rrc_example_package import rearrange_dice_env
 import trifinger_simulation.tasks.rearrange_dice as task
@@ -148,5 +149,26 @@ newmodel = torch.nn.Sequential(*(list(resnet.children())[:-1]))
 resnet = ResNet(newmodel)
 env = rearrange_dice_env.RealRobotRearrangeDiceEnv(rearrange_dice_env.ActionType.POSITION,goal= None,step_size=1,)
 env.reset()
-batch, goals = generate_batch(env, 64)
+while True:
+
+    input_batch, goals = generate_batch(env, 64)
+    loss = torch.nn.MSELoss()
+    if torch.cuda.is_available():
+        input_batch = input_batch.to('cuda')
+        goals = goals.to('cuda')
+        resnet.to('cuda')
+
+    preprocess = transforms.Compose([
+    transforms.Resize(256),
+    transforms.CenterCrop(224),
+    transforms.ToTensor(),
+    transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),])
+
+    input_batch = preprocess(input_batch)
+    out = resnet(input_batch)
+    cost = loss(out, goals)
+    cost.backward()
+    print("Loss: {}".format(loss))
+
+
 #loss = nn.MSELoss()
