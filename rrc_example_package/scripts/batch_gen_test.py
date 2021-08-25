@@ -112,7 +112,7 @@ def generate_goal_mask(camera_parameters, goal):
     rvec = Rotation.from_matrix(rmat).as_rotvec()
 
     for pos in goal:
-        corners = _get_cell_corners_3d(pos)
+        corners = get_cell_corners_3d(pos)
 
         # project corner points into the image
         projected_corners, _ = cv2.projectPoints(
