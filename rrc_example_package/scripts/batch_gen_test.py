@@ -37,7 +37,7 @@ class ResNet(torch.nn.Module):
 		x = torch.flatten(x, 1)
 		print(x.shape)
 		out = self.fc(x)
-		return x
+		return out
 	
 
 
