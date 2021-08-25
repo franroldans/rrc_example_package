@@ -29,7 +29,7 @@ class ResNet(torch.nn.Module):
 	def __init__(self, resnet):
 		super(ResNet, self).__init__()
 		self.resnet = resnet
-		self.fc = torch.nn.Linear(256*2, 3*25)
+		self.fc = torch.nn.Linear(512, 3*25)
 
 	def forward(self, x):
 		x = self.resnet(x)
