@@ -33,6 +33,7 @@ class ResNet(torch.nn.Module):
 
 	def forward(self, x):
 		x = self.resnet(x)
+		print(x.shape)
 		x = torch.flatten(x, 1)
 		out = self.fc(x)
 		return x
