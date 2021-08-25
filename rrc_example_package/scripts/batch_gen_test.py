@@ -131,7 +131,7 @@ resnet_ = models.resnet18(pretrained=False)
 newmodel = torch.nn.Sequential(*(list(resnet_.children())[:-1]))
 resnet = ResNet(newmodel)
 
-print(resnet)
+print(resnet.parameters())
 env = rearrange_dice_env.RealRobotRearrangeDiceEnv(rearrange_dice_env.ActionType.POSITION,goal= None,step_size=1,)
 env.reset()
 while True:
