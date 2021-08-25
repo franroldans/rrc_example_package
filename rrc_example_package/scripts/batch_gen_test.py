@@ -152,7 +152,7 @@ env = rearrange_dice_env.RealRobotRearrangeDiceEnv(rearrange_dice_env.ActionType
 env.reset()
 while True:
 
-    input_batch, goals = generate_batch(env, 64)
+    input_batch, goals = generate_batch(env, 8)
     input_batch = torch.from_numpy(input_batch).float()
     goals = torch.from_numpy(goals).float()
     loss = torch.nn.MSELoss()
