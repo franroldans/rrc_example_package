@@ -40,33 +40,16 @@ class ResNet(torch.nn.Module):
 		return out
 	
 
-
-
-
-
-"""def generate_batch(batch_size):
-	batch = np.ones((batch_size, 270, 270, 3))
-	for i in range(batch_size):
-		seg_mask = np.ones((270, 270, 3))
-		env = rearrange_dice_env.RealRobotRearrangeDiceEnv(rearrange_dice_env.ActionType.POSITION,goal= None,step_size=1,)
-		env.reset()
-		obs = env.platform.get_camera_observation(0)
-		for idx, c in enumerate(obs.cameras):
-			seg_mask[:, :, idx]  = segment_image(cv2.cvtColor(c.image, cv2.COLOR_RGB2BGR)) 
-		#segmentation_masks = np.array([segment_image(cv2.cvtColor(c.image, cv2.COLOR_RGB2BGR)) for c in obs.cameras])
-		batch[i] = seg_mask
-	return batch"""
-
 def generate_batch(env, batch_size):
-	batch = np.ones((batch_size, 3, 256, 256))
+	batch = np.ones((batch_size, 3, 270, 270))
 	goals = np.ones((batch_size, 25 * 3))
 	for i in range(batch_size):
-		seg_mask = np.ones((3, 256, 256))
+		seg_mask = np.ones((3, 270, 170))
 		g = task.sample_goal()
 		goal = np.array(list(itertools.chain(*g)))
 		goals[i] = goal
 		for idx, c in enumerate(env.camera_params):
-			seg_mask[idx,:,:] = np.resize(generate_goal_mask(c, g), (256, 256))
+			seg_mask[idx,:,:] = generate_goal_mask(c, g)
 		#segmentation_masks = np.array([segment_image(cv2.cvtColor(c.image, cv2.COLOR_RGB2BGR)) for c in obs.cameras])
 		batch[i] = seg_mask
 	return batch, goals
@@ -176,7 +159,7 @@ while True:
     print(goals.shape)
     cost = loss(out, goals)
     cost.backward()
-    print("Loss: {}".format(loss))
+    print("Loss: {}".format(cost))
 
 
 #loss = nn.MSELoss()
