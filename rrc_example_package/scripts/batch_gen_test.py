@@ -33,9 +33,7 @@ class ResNet(torch.nn.Module):
 
 	def forward(self, x):
 		x = self.resnet(x)
-		print(x.shape)
 		x = torch.flatten(x, 1)
-		print(x.shape)
 		out = self.fc(x)
 		return out
 	
@@ -155,8 +153,6 @@ while True:
 
     #input_batch = preprocess(input_batch)
     out = resnet(input_batch)
-    print(out.shape)
-    print(goals.shape)
     cost = loss(out, goals)
     cost.backward()
     print("Loss: {}".format(cost))
