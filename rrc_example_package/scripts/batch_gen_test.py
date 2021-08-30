@@ -47,7 +47,7 @@ def generate_batch(env, batch_size):
 		seg_mask = np.ones((3, 270, 270))
 		g = task.sample_goal()
 		goal = list(itertools.chain(*g))
-		goal = g for i, g in enumerate(goal) if ((i+1) % 3) !=0]
+		goal = [g for i, g in enumerate(goal) if ((i+1) % 3) !=0]
 		goals[i] = np.array(goal)
 		for idx, c in enumerate(env.camera_params):
 			seg_mask[idx,:,:] = generate_goal_mask(c, g)
