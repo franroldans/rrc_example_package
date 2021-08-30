@@ -155,6 +155,7 @@ while True:
     transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),])
 
     #input_batch = preprocess(input_batch)
+    input_batch = torch.nn.functional.normalize(input_batch)
     out = resnet(input_batch)
     cost = loss(out, goals)
     cost.backward()
@@ -162,7 +163,7 @@ while True:
     print("Loss: {}".format(cost))
     if cost < min_cost:
         min_cost = cost
-        torch.save(resnet.state_dict(), './best_model.pth')
+        torch.save(resnet.state_dict(), './best_model2.pth')
 
 
 #loss = nn.MSELoss()
