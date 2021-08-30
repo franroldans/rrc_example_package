@@ -165,7 +165,7 @@ while True:
     print("Loss: {}".format(cost))
     if cost < min_cost:
         min_cost = cost
-        torch.save(resnet.state_dict(), './best_model2.pth')
+        torch.save(resnet.state_dict(), './best_model_constantZ.pth')
 
 
 #loss = nn.MSELoss()
