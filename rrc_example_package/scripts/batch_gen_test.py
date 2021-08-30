@@ -41,12 +41,14 @@ class ResNet(torch.nn.Module):
 
 def generate_batch(env, batch_size):
 	batch = np.ones((batch_size, 3, 270, 270))
-	goals = np.ones((batch_size, 25 * 3))
+	#goals = np.ones((batch_size, 25 * 3))
+	goals = np.ones((batch_size, 25 * 2))
 	for i in range(batch_size):
 		seg_mask = np.ones((3, 270, 270))
 		g = task.sample_goal()
-		goal = np.array(list(itertools.chain(*g)))
-		goals[i] = goal
+		goal = list(itertools.chain(*g))
+		goal = g for i, g in enumerate(goal) if ((i+1) % 3) !=0]
+		goals[i] = np.array(goal)
 		for idx, c in enumerate(env.camera_params):
 			seg_mask[idx,:,:] = generate_goal_mask(c, g)
 		#segmentation_masks = np.array([segment_image(cv2.cvtColor(c.image, cv2.COLOR_RGB2BGR)) for c in obs.cameras])
