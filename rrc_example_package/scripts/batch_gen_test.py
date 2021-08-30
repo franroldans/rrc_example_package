@@ -139,7 +139,7 @@ optim = torch.optim.Adam(filter(lambda p: p.requires_grad, resnet.parameters()),
 min_cost = 10000
 while True:
 
-    input_batch, goals = generate_batch(env, 32)
+    input_batch, goals = generate_batch(env, 16)
     input_batch = torch.from_numpy(input_batch).float()
     goals = torch.from_numpy(goals).float()
     loss = torch.nn.MSELoss()
