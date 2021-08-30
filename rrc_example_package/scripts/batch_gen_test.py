@@ -136,6 +136,7 @@ print(resnet.parameters())
 env = rearrange_dice_env.RealRobotRearrangeDiceEnv(rearrange_dice_env.ActionType.POSITION,goal= None,step_size=1,)
 env.reset()
 optim = torch.optim.Adam(filter(lambda p: p.requires_grad, resnet.parameters()), lr=0.00001)
+min_cost = 10000
 while True:
 
     input_batch, goals = generate_batch(env, 8)
@@ -159,6 +160,9 @@ while True:
     cost.backward()
     optim.step()
     print("Loss: {}".format(cost))
+    if cost < min_cost:
+		min_cost = cost
+		torch.save(resnet.state_dict(), './best_model.pth')
 
 
 #loss = nn.MSELoss()
