@@ -29,7 +29,7 @@ class ResNet(torch.nn.Module):
 	def __init__(self, resnet):
 		super(ResNet, self).__init__()
 		self.resnet = resnet
-		self.fc = torch.nn.Linear(512, 2*25)
+		self.fc = torch.nn.Linear(512, 3*25)
 
 	def forward(self, x):
 		x = self.resnet(x)
@@ -41,13 +41,13 @@ class ResNet(torch.nn.Module):
 
 def generate_batch(env, batch_size):
 	batch = np.ones((batch_size, 3, 270, 270))
-	#goals = np.ones((batch_size, 25 * 3))
-	goals = np.ones((batch_size, 25 * 2))
+	goals = np.ones((batch_size, 25 * 3))
+	#goals = np.ones((batch_size, 25 * 2))
 	for i in range(batch_size):
 		seg_mask = np.ones((3, 270, 270))
 		g = task.sample_goal()
 		goal = list(itertools.chain(*g))
-		goal = [g for i, g in enumerate(goal) if ((i+1) % 3) !=0]
+		#goal = [g for i, g in enumerate(goal) if ((i+1) % 3) !=0]
 		goals[i] = np.array(goal)
 		for idx, c in enumerate(env.camera_params):
 			seg_mask[idx,:,:] = generate_goal_mask(c, g)
@@ -150,11 +150,11 @@ while True:
         goals = goals.to('cuda')
         resnet.to('cuda')
 
-    preprocess = transforms.Compose([
+    """preprocess = transforms.Compose([
     transforms.Resize(256),
     transforms.CenterCrop(224),
     transforms.ToTensor(),
-    transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),])
+    transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),])"""
 
     #input_batch = preprocess(input_batch)
     input_batch = torch.nn.functional.normalize(input_batch)
