@@ -251,7 +251,7 @@ model = vgg19_bn(pretrained=False)
 
 env = rearrange_dice_env.RealRobotRearrangeDiceEnv(rearrange_dice_env.ActionType.POSITION,goal= None,step_size=1,)
 env.reset()
-optim = torch.optim.Adam(filter(lambda p: p.requires_grad, resnet.parameters()), lr=0.0001)
+optim = torch.optim.Adam(filter(lambda p: p.requires_grad, model.parameters()), lr=0.0001)
 min_cost = 300000
 while True:
 
@@ -284,7 +284,7 @@ while True:
     print("Loss: {}".format(cost))
     if cost < min_cost:
         min_cost = cost
-        torch.save(resnet.state_dict(), './vgg2d.pth')
+        torch.save(model.state_dict(), './vgg2d.pth')
 
 
 #loss = nn.MSELoss()
