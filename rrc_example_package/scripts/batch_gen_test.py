@@ -29,7 +29,7 @@ class ResNet(torch.nn.Module):
 	def __init__(self, resnet):
 		super(ResNet, self).__init__()
 		self.resnet = resnet
-		self.fc = torch.nn.Linear(512, 3*25)
+		self.fc = torch.nn.Linear(512, 2*25)
 
 	def forward(self, x):
 		x = self.resnet(x)
@@ -40,17 +40,20 @@ class ResNet(torch.nn.Module):
 	
 
 def generate_batch(env, batch_size):
-	batch = np.ones((batch_size, 3, 270, 270))
-	goals = np.ones((batch_size, 25 * 3))
+	batch = np.ones((batch_size, 270, 270))
+	goals = np.ones((batch_size, 25 * 2))
 	#goals = np.ones((batch_size, 25 * 2))
 	for i in range(batch_size):
 		seg_mask = np.ones((3, 270, 270))
 		g = task.sample_goal()
+		g = world2image(g, env.camera_params[0])
+		print(g)
+		print(len(g))
 		goal = list(itertools.chain(*g))
 		#goal = [g for i, g in enumerate(goal) if ((i+1) % 3) !=0]
 		goals[i] = np.array(goal)
-		for idx, c in enumerate(env.camera_params):
-			seg_mask[idx,:,:] = generate_goal_mask(c, g)
+		#for idx, c in enumerate(env.camera_params):
+		seg_mask[i,:,:] = generate_goal_mask(env.camera_params[0], g)
 		#segmentation_masks = np.array([segment_image(cv2.cvtColor(c.image, cv2.COLOR_RGB2BGR)) for c in obs.cameras])
 		batch[i] = seg_mask
 	return batch, goals
@@ -129,6 +132,24 @@ def generate_goal_mask(camera_parameters, goal):
         #masks.append(mask)
 
     return mask
+
+def world2image(goal, camera_params):
+    img_plane = []
+    # get camera position and orientation separately
+    tvec = camera_params.tf_world_to_camera[:3, 3]
+    rmat = camera_params.tf_world_to_camera[:3, :3]
+    rvec = Rotation.from_matrix(rmat).as_rotvec()
+    for pos in goal:
+        # project corner points into the image
+        proj_pos, _ = cv2.projectPoints(
+            pos,
+            rvec,
+            tvec,
+            camera_params[0].camera_matrix,
+            camera_params[0].distortion_coefficients,
+        )
+        img_plane.append(proj_pos[0][0])
+    return img_plane
 
 resnet_ = models.resnet18(pretrained=False)
 newmodel = torch.nn.Sequential(*(list(resnet_.children())[:-1]))
