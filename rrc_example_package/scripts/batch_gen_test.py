@@ -5,7 +5,6 @@ from scipy.spatial.transform import Rotation
 import imutils
 import itertools
 
-import torchvision.models as models
 import torch
 from torchvision import transforms
 
@@ -165,7 +164,7 @@ class ResNet(torch.nn.Module):
                              "or a 3-element tuple, got {}".format(replace_stride_with_dilation))
         self.groups = groups
         self.base_width = width_per_group
-        self.conv1 = torch.nn.Conv2d(1, self.inplanes, kernel_size=7, stride=2, padding=3,
+        self.conv1 = torch.nn.Conv2d(3, self.inplanes, kernel_size=7, stride=2, padding=3,
                                bias=False)
         self.bn1 = norm_layer(self.inplanes)
         self.relu = torch.nn.ReLU(inplace=True)
@@ -298,7 +297,7 @@ class CustomResNet(torch.nn.Module):
 	
 
 def generate_batch(env, batch_size):
-	batch = np.ones((batch_size, 270, 270))
+	batch = np.ones((batch_size,1, 270, 270))
 	goals = np.ones((batch_size, 25 * 2))
 	#goals = np.ones((batch_size, 25 * 2))
 	for i in range(batch_size):
@@ -309,7 +308,7 @@ def generate_batch(env, batch_size):
 		#goal = [g for i, g in enumerate(goal) if ((i+1) % 3) !=0]
 		goals[i] = np.array(goal)
 		#for idx, c in enumerate(env.camera_params):
-		batch[i] = generate_goal_mask(env.camera_params[0], g_)
+		batch[i] = np.expand_dims(generate_goal_mask(env.camera_params[0], g_), axis=0)
 		#segmentation_masks = np.array([segment_image(cv2.cvtColor(c.image, cv2.COLOR_RGB2BGR)) for c in obs.cameras])
 		#batch[i] = seg_mask
 	return batch, goals
