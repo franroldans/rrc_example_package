@@ -144,7 +144,8 @@ while True:
     input_batch, goals = generate_batch(env, 16)
     input_batch = torch.from_numpy(input_batch).float()
     goals = torch.from_numpy(goals).float()
-    loss = torch.nn.MSELoss()
+    #loss = torch.nn.MSELoss()
+    loss = torch.norm()
     if torch.cuda.is_available():
         input_batch = input_batch.to('cuda')
         goals = goals.to('cuda')
@@ -159,7 +160,9 @@ while True:
     #input_batch = preprocess(input_batch)
     input_batch = torch.nn.functional.normalize(input_batch)
     out = resnet(input_batch)
-    cost = loss(out, goals)
+    cost = 0
+    for i in range(0, 25*3, 3):
+    	cost += loss(out[i:i+3] - goals[i:i+3])
     cost.backward()
     optim.step()
     print("Loss: {}".format(cost))
