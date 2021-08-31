@@ -35,7 +35,7 @@ class ResNet(torch.nn.Module):
 		x = self.resnet(x)
 		x = torch.flatten(x, 1)
 		out = self.fc(x)
-		out = torch.clamp(out, -0.15, 0.15)
+		#out = torch.clamp(out, -0.15, 0.15)
 		return out
 	
 
