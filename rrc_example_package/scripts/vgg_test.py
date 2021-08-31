@@ -255,7 +255,7 @@ optim = torch.optim.Adam(filter(lambda p: p.requires_grad, model.parameters()), 
 min_cost = 300000
 while True:
 
-    input_batch, goals = generate_batch(env, 8)
+    input_batch, goals = generate_batch(env, 4)
     input_batch = torch.from_numpy(input_batch).float()
     goals = torch.from_numpy(goals).float()
     loss = torch.nn.MSELoss()
