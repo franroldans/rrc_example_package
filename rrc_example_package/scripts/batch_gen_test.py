@@ -145,8 +145,8 @@ def world2image(goal, camera_params):
             pos,
             rvec,
             tvec,
-            camera_params[0].camera_matrix,
-            camera_params[0].distortion_coefficients,
+            camera_params.camera_matrix,
+            camera_params.distortion_coefficients,
         )
         img_plane.append(proj_pos[0][0])
     return img_plane
