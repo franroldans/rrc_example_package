@@ -45,15 +45,13 @@ def generate_batch(env, batch_size):
 	#goals = np.ones((batch_size, 25 * 2))
 	for i in range(batch_size):
 		seg_mask = np.ones((3, 270, 270))
-		g = task.sample_goal()
-		g = world2image(g, env.camera_params[0])
-		print(g)
-		print(len(g))
+		g_ = task.sample_goal()
+		g = world2image(g_, env.camera_params[0])
 		goal = list(itertools.chain(*g))
 		#goal = [g for i, g in enumerate(goal) if ((i+1) % 3) !=0]
 		goals[i] = np.array(goal)
 		#for idx, c in enumerate(env.camera_params):
-		seg_mask[i,:,:] = generate_goal_mask(env.camera_params[0], g)
+		seg_mask[i,:,:] = generate_goal_mask(env.camera_params[0], g_)
 		#segmentation_masks = np.array([segment_image(cv2.cvtColor(c.image, cv2.COLOR_RGB2BGR)) for c in obs.cameras])
 		batch[i] = seg_mask
 	return batch, goals
