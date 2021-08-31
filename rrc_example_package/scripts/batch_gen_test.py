@@ -163,6 +163,7 @@ while True:
     cost = 0
     for i in range(0, 25*3, 3):
     	cost += torch.norm(out[i:i+3] - goals[i:i+3], 2)
+    cost = cost / 25
     cost.backward()
     optim.step()
     print("Loss: {}".format(cost))
