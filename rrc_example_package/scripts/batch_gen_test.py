@@ -417,7 +417,7 @@ def world2image(goal, camera_params):
         img_plane.append(proj_pos[0][0])
     return img_plane
 
-resnet_ = resnet50(pretrained=False)
+resnet_ = resnet18(pretrained=False)
 newmodel = torch.nn.Sequential(*(list(resnet_.children())[:-1]))
 resnet = CustomResNet(newmodel)
 
