@@ -245,11 +245,10 @@ def world2image(goal, camera_params):
         img_plane.append(proj_pos[0][0])
     return img_plane
 
-resnet_ = resnet18(pretrained=False)
-newmodel = torch.nn.Sequential(*(list(resnet_.children())[:-1]))
-resnet = CustomResNet(newmodel)
+model = vgg19_bn(pretrained=False)
+#newmodel = torch.nn.Sequential(*(list(resnet_.children())[:-1]))
+#resnet = CustomResNet(newmodel)
 
-print(resnet.parameters())
 env = rearrange_dice_env.RealRobotRearrangeDiceEnv(rearrange_dice_env.ActionType.POSITION,goal= None,step_size=1,)
 env.reset()
 optim = torch.optim.Adam(filter(lambda p: p.requires_grad, resnet.parameters()), lr=0.0001)
@@ -274,7 +273,7 @@ while True:
 
     #input_batch = preprocess(input_batch)
     input_batch = torch.nn.functional.normalize(input_batch)
-    out = resnet(input_batch)
+    out = model(input_batch)
     """cost = 0
     for i in range(0, 25*3, 3):
     	cost += torch.norm(out[i:i+3] - goals[i:i+3], 2)
