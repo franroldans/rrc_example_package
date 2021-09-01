@@ -332,7 +332,9 @@ def generate_batch(env, batch_size):
 		goals[i] = np.array(goal)
 		#for idx, c in enumerate(env.camera_params):
 		#batch[i] = np.expand_dims(generate_goal_mask(env.camera_params[0], g_), axis=0)
-		batch[i] = env.camera_params[0].image
+		env.reset()
+		camera_observation = env.platform.get_camera_observation(0)
+		batch[i] = camera_observation.cameras[0].image
 		#segmentation_masks = np.array([segment_image(cv2.cvtColor(c.image, cv2.COLOR_RGB2BGR)) for c in obs.cameras])
 		#batch[i] = seg_mask
 	return batch, goals
@@ -435,7 +437,7 @@ newmodel = torch.nn.Sequential(*(list(resnet_.children())[:-1]))
 resnet = CustomResNet(newmodel)
 
 print(resnet.parameters())
-env = rearrange_dice_env.RealRobotRearrangeDiceEnv(rearrange_dice_env.ActionType.POSITION,goal= None,step_size=1,)
+env = rearrange_dice_env.SimRearrangeDiceEnv(rearrange_dice_env.ActionType.POSITION,goal= None,step_size=1,visualization=False)
 env.reset()
 optim = torch.optim.Adam(filter(lambda p: p.requires_grad, resnet.parameters()), lr=0.0001)
 min_cost = 300000
