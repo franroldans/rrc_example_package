@@ -333,8 +333,8 @@ def generate_batch(env, batch_size):
 		#for idx, c in enumerate(env.camera_params):
 		#batch[i] = np.expand_dims(generate_goal_mask(env.camera_params[0], g_), axis=0)
 		env.reset()
-		camera_observation = env.platform.get_camera_observation(0).transpose(2,0,1)
-		batch[i] = camera_observation.cameras[0].image
+		camera_observation = env.platform.get_camera_observation(0)
+		batch[i] = camera_observation.cameras[0].image.transpose(2,0,1)
 		#segmentation_masks = np.array([segment_image(cv2.cvtColor(c.image, cv2.COLOR_RGB2BGR)) for c in obs.cameras])
 		#batch[i] = seg_mask
 	return batch, goals
