@@ -15,7 +15,7 @@ from trifinger_simulation.camera import (
     load_camera_parameters,
     CameraParameters,
 )
-from trifinger_simulation.trifinger_platform import ObjectType
+from trifinger_simulation.trifinger_platform import ObjectType, TriFingerPlatform
 from trifinger_cameras.utils import convert_image
 from trifinger_object_tracking.py_lightblue_segmenter import segment_image
 
