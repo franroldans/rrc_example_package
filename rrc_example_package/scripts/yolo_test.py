@@ -5,10 +5,12 @@ model = torch.hub.load('ultralytics/yolov5', 'yolov5s')
 
 env = rearrange_dice_env.RealRobotRearrangeDiceEnv(rearrange_dice_env.ActionType.POSITION,goal= None,step_size=1,)
 env.reset()
-camera_observation = env.platform.get_camera_observation(0).cameras[0].image
+camera_observation = env.platform.get_camera_observation(0)
+camera_observation = camera_observation.cameras[0].image
 cv2.imwrite('camobs.png', camera_observation)
 camera_observation = camera_observation.transpose(2, 0, 1)
 results = model(camera_observation, size=270)
+results.save()
 #cv2.imwrite('results.png', results)
 
 results.xyxy[0]
