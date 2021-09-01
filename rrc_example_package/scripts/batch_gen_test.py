@@ -437,7 +437,7 @@ newmodel = torch.nn.Sequential(*(list(resnet_.children())[:-1]))
 resnet = CustomResNet(newmodel)
 
 print(resnet.parameters())
-env = rearrange_dice_env.SimRearrangeDiceEnv(rearrange_dice_env.ActionType.POSITION,goal= None,step_size=1,visualization=False)
+env = rearrange_dice_env.SimRearrangeDiceEnv(None, rearrange_dice_env.ActionType.POSITION,step_size=1,visualization=False)
 env.reset()
 optim = torch.optim.Adam(filter(lambda p: p.requires_grad, resnet.parameters()), lr=0.0001)
 min_cost = 300000
