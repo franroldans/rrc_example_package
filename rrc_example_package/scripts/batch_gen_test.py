@@ -164,7 +164,7 @@ class ResNet(torch.nn.Module):
                              "or a 3-element tuple, got {}".format(replace_stride_with_dilation))
         self.groups = groups
         self.base_width = width_per_group
-        self.conv1 = torch.nn.Conv2d(1, self.inplanes, kernel_size=7, stride=2, padding=3,
+        self.conv1 = torch.nn.Conv2d(3, self.inplanes, kernel_size=7, stride=2, padding=3,
                                bias=False)
         self.bn1 = norm_layer(self.inplanes)
         self.relu = torch.nn.ReLU(inplace=True)
@@ -308,7 +308,7 @@ class CustomResNet(torch.nn.Module):
 	
 
 def generate_batch(env, batch_size):
-	batch = np.ones((batch_size,1, 270, 270))
+	batch = np.ones((batch_size,3, 270, 270))
 	goals = np.ones((batch_size, 25 * 2))
 	#goals = np.ones((batch_size, 25 * 2))
 	for i in range(batch_size):
@@ -319,7 +319,8 @@ def generate_batch(env, batch_size):
 		#goal = [g for i, g in enumerate(goal) if ((i+1) % 3) !=0]
 		goals[i] = np.array(goal)
 		#for idx, c in enumerate(env.camera_params):
-		batch[i] = np.expand_dims(generate_goal_mask(env.camera_params[0], g_), axis=0)
+		#batch[i] = np.expand_dims(generate_goal_mask(env.camera_params[0], g_), axis=0)
+		batch[i] = env.camera_params[0].image
 		#segmentation_masks = np.array([segment_image(cv2.cvtColor(c.image, cv2.COLOR_RGB2BGR)) for c in obs.cameras])
 		#batch[i] = seg_mask
 	return batch, goals
@@ -417,7 +418,7 @@ def world2image(goal, camera_params):
         img_plane.append(proj_pos[0][0])
     return img_plane
 
-resnet_ = resnet18(pretrained=False)
+resnet_ = resnet18(pretrained=True)
 newmodel = torch.nn.Sequential(*(list(resnet_.children())[:-1]))
 resnet = CustomResNet(newmodel)
 
