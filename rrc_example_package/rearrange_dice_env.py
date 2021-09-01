@@ -5,13 +5,20 @@ import typing
 
 import gym
 import numpy as np
+import cv2
 
 import robot_fingers
+import trifinger_simulation
 import trifinger_simulation.tasks.rearrange_dice as task
-from trifinger_simulation.trifinger_platform import TriFingerPlatform, ObjectType
 from trifinger_simulation import trifingerpro_limits
-from trifinger_simulation.camera import load_camera_parameters
+from trifinger_simulation.camera import (
+    load_camera_parameters,
+    CameraParameters,
+)
+from trifinger_simulation.trifinger_platform import ObjectType
+from trifinger_cameras.utils import convert_image
 from trifinger_object_tracking.py_lightblue_segmenter import segment_image
+
 
 
 CONFIG_DIR = pathlib.Path("./")
