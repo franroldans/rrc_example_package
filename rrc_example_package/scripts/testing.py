@@ -16,7 +16,7 @@ from trifinger_object_tracking.py_lightblue_segmenter import segment_image
 
 
 def get_2d_center(x, y, w, h):
-    return ((x + x + w) / 2, (y+y+h) / 2)
+    return (round((x + x + w) / 2), round((y+y+h) / 2))
     
 
 def main():
