@@ -73,7 +73,7 @@ def image2coords(camera_observation, camera_params, write_images=False):
         if len_out < len(out):
             coords = out
             len_out = len(out)
-     return coords
+    return coords
     
 def main():
 
