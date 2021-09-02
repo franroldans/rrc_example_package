@@ -54,6 +54,7 @@ def main():
     env.reset()
 
     camera_observation = env.platform.get_camera_observation(0)
+    camera_params = env.camera_params
 
     for i, c in enumerate(camera_observation.cameras):
         cv2.imwrite('test{}.png'.format(i), c.image)
@@ -73,7 +74,7 @@ def main():
             # obtain the bounding rectangle coordinates for each square
             x, y, w, h = cv2.boundingRect(c)
             x_c, y_c = get_2d_center(x, y, w, h)
-            world_point_c = image2world((x_c, y_c), c, z = 0.011)
+            world_point_c = image2world((x_c, y_c), camera_params[i], z = 0.011)
             print(world_point_c)
             # With the bounding rectangle coordinates we draw the green bounding boxes
             cv2.rectangle(copy, (x, y), (x + w, y + h), (36, 255, 12), 2)
