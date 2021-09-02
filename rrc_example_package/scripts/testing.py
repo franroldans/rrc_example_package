@@ -37,7 +37,7 @@ def image2world(image_point, camera_parameters, z = 0.011):
     wcPoint = np.matmul(iRot, (np.matmul(s * iCam, uvPoint) - tvec))
     wcPoint[2] = z #Hardcoded as z is always 0.011 for the default task
 
-    return tuple(wcPoint)
+    return tuple(map(float,wcPoint))
 
 def get_2d_center(x, y, w, h):
     return (round((x + x + w) / 2), round((y+y+h) / 2))
