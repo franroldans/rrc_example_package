@@ -15,6 +15,31 @@ import trifinger_simulation.tasks.rearrange_dice as task
 from trifinger_object_tracking.py_lightblue_segmenter import segment_image
 
 
+def image2world(image_point, camera_parameters, z = 0.011):
+    
+    # get camera position and orientation separately
+    tvec = camera_parameters[0].tf_world_to_camera[:3, 3]
+    rmat = camera_parameters[0].tf_world_to_camera[:3, :3]
+    rvec = Rotation.from_matrix(rmat).as_rotvec()
+    
+    camMat = np.asarray(camera_parameters[0].camera_matrix)
+    iRot = np.linalg.inv(rotMat)
+    iCam = np.linalg.inv(camMat)
+
+    uvPoint = np.ones((3, 1))
+    # Image point
+    uvPoint[0, 0] = image_point[0]
+    uvPoint[1, 0] = image_point[1]
+
+    tempMat = np.matmul(np.matmul(iRot, iCam), uvPoint)
+    tempMat2 = np.matmul(iRot, tvec)
+
+    s = (z + tempMat2[2, 0]) / tempMat[2, 0]
+    wcPoint = np.matmul(iRot, (np.matmul(s * iCam, uvPoint) - tvec))
+    wcPoint[2] = z #Hardcoded as z is always 0.011 for the default task
+
+    return tuple(map(tuple, wcPoint))
+
 def get_2d_center(x, y, w, h):
     return (round((x + x + w) / 2), round((y+y+h) / 2))
     
@@ -48,8 +73,8 @@ def main():
             # obtain the bounding rectangle coordinates for each square
             x, y, w, h = cv2.boundingRect(c)
             x_c, y_c = get_2d_center(x, y, w, h)
-            print(x_c)
-            print(y_c)
+            world_point_c = image2world((x_c, y_c), c, z = 0.011)
+            print(world_point_c)
             # With the bounding rectangle coordinates we draw the green bounding boxes
             cv2.rectangle(copy, (x, y), (x + w, y + h), (36, 255, 12), 2)
             cv2.circle(copy, (x_c, y_c), radius=0, color=(36, 255, 12), thickness=2)
