@@ -47,9 +47,10 @@ def main():
         for c in contours:
             # obtain the bounding rectangle coordinates for each square
             x, y, w, h = cv2.boundingRect(c)
+            x_c, y_c = get_2d_center(x, y, w, h)
             # With the bounding rectangle coordinates we draw the green bounding boxes
             cv2.rectangle(copy, (x, y), (x + w, y + h), (36, 255, 12), 2)
-            cv2.circle(copy, get_2d_center(x, y, w, h), radius=0, color=(36, 255, 12), thickness=2)
+            cv2.circle(copy, (x_c, y_c), radius=0, color=(36, 255, 12), thickness=2)
         id = i + 10
         cv2.imwrite('test{}.png'.format(id), copy)
 
