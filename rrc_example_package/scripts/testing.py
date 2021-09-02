@@ -18,8 +18,9 @@ def image2world(image_point, camera_parameters, z = 0.011):
     
     # get camera position and orientation separately
     tvec = camera_parameters.tf_world_to_camera[:3, 3]
+    tvec = tvec[:, np.newaxis]
     rmat = camera_parameters.tf_world_to_camera[:3, :3]
-    
+    print(rmat.shape)
     camMat = np.asarray(camera_parameters.camera_matrix)
     iRot = np.linalg.inv(rmat)
     iCam = np.linalg.inv(camMat)
