@@ -48,6 +48,8 @@ def main():
             # obtain the bounding rectangle coordinates for each square
             x, y, w, h = cv2.boundingRect(c)
             x_c, y_c = get_2d_center(x, y, w, h)
+            print(x_c)
+            print(y_c)
             # With the bounding rectangle coordinates we draw the green bounding boxes
             cv2.rectangle(copy, (x, y), (x + w, y + h), (36, 255, 12), 2)
             cv2.circle(copy, (x_c, y_c), radius=0, color=(36, 255, 12), thickness=2)
