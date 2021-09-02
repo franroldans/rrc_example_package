@@ -6,7 +6,6 @@ using a dummy policy.
 import sys
 import numpy as np
 import cv2
-from scipy.spatial.transform import Rotation
 import imutils
 
 from rrc_example_package import rearrange_dice_env
@@ -20,10 +19,9 @@ def image2world(image_point, camera_parameters, z = 0.011):
     # get camera position and orientation separately
     tvec = camera_parameters.tf_world_to_camera[:3, 3]
     rmat = camera_parameters.tf_world_to_camera[:3, :3]
-    rvec = Rotation.from_matrix(rmat).as_rotvec()
     
     camMat = np.asarray(camera_parameters.camera_matrix)
-    iRot = np.linalg.inv(rotMat)
+    iRot = np.linalg.inv(rmat)
     iCam = np.linalg.inv(camMat)
 
     uvPoint = np.ones((3, 1))
