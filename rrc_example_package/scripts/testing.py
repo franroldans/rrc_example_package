@@ -86,7 +86,7 @@ def main():
 
     camera_observation = env.platform.get_camera_observation(0)
     camera_params = env.camera_params
-    coords = image2world(camera_observation, camera_params, True)
+    coords = image2coords(camera_observation, camera_params, True)
     print(coords)
     
 
