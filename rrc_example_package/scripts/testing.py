@@ -15,6 +15,10 @@ import trifinger_simulation.tasks.rearrange_dice as task
 from trifinger_object_tracking.py_lightblue_segmenter import segment_image
 
 
+def get_2d_center(x, y, w, h):
+    return ((x + x + w) / 2, (y+y+h) / 2)
+    
+
 def main():
 
     env = rearrange_dice_env.RealRobotRearrangeDiceEnv(
@@ -28,14 +32,7 @@ def main():
 
     for i, c in enumerate(camera_observation.cameras):
         cv2.imwrite('test{}.png'.format(i), c.image)
-        
-        #print(type(c.image))
-        #print(type(segment_image(c.image)))
-        #print(segment_image(c.image).max())
-        #mult = cv2.multiply(c.image, segment_image(c.image)[:,:, np.newaxis])
-        #cv2.imwrite('mult{}.png'.format(i), mult)
         copy = c.image.copy()
-        #mult = copy * segment_image(c.image)
         grey = cv2.cvtColor(c.image, cv2.COLOR_BGR2GRAY)
         grey = grey * segment_image(cv2.cvtColor(c.image, cv2.COLOR_RGB2BGR))
         cv2.imwrite('grey{}.png'.format(i), grey)
@@ -44,11 +41,7 @@ def main():
         blurred = cv2.GaussianBlur(decrease_noise, (3, 3), 0)
         canny = cv2.Canny(blurred, 10, 30)
         thresh = cv2.threshold(canny, 0, 255, cv2.THRESH_OTSU + cv2.THRESH_BINARY)[1]
-        # Creating kernel
-        #kernel = np.ones((5, 5), np.uint8)
-        #thresh = cv2.erode(thresh, kernel, iterations=1)
         contours = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-
         contours = contours[0] if len(contours) == 2 else contours[1]
 
         for c in contours:
@@ -56,40 +49,10 @@ def main():
             x, y, w, h = cv2.boundingRect(c)
             # With the bounding rectangle coordinates we draw the green bounding boxes
             cv2.rectangle(copy, (x, y), (x + w, y + h), (36, 255, 12), 2)
+            cv2.circle(copy, get_2d_center(x, y, w, h), radius=0, color=(36, 255, 12), thickness=2)
         id = i + 10
         cv2.imwrite('test{}.png'.format(id), copy)
 
-    """segmentation_masks = [
-            segment_image( cv2.cvtColor(c.image, cv2.COLOR_RGB2BGR)) for c in camera_observation.cameras
-        ]
-
-    #segmentation_masks = np.load('masks.npy')
-    for idx, mask in enumerate(segmentation_masks):
-        print(mask.max())
-        cnts = cv2.findContours(mask.copy(), cv2.RETR_EXTERNAL,
-            cv2.CHAIN_APPROX_SIMPLE)
-        cnts = imutils.grab_contours(cnts)
-        # loop over the contours
-        for c in cnts:
-            # compute the center of the contour
-            M = cv2.moments(c)
-            cX = int(M["m10"] / M["m00"])
-            cY = int(M["m01"] / M["m00"])
-
-
-        result = mask.copy()
-        for c in cnts:
-            # get rotated rectangle from contour
-            rot_rect = cv2.minAreaRect(c)
-            box = cv2.boxPoints(rot_rect)
-            box = np.int0(box)
-            # draw rotated rectangle on copy of img
-            cv2.drawContours(result,[box],0,(255,0,0),2)
-        id = idx + 10
-        cv2.imwrite('test{}.png'.format(id), result)
-
-    #masks = task.generate_goal_mask(camera_params, goal)
-    #np.save('masks.npy', masks)"""
 
 if __name__ == "__main__":
     main()
