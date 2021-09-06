@@ -7,7 +7,7 @@ import sys
 import numpy as np
 import cv2
 import imutils
-import trifinger_object_tracking.py_tricamera_types as tricamera
+import trifinger_cameras.py_tricamera_types as tricamera
 from trifinger_cameras.utils import convert_image
 from rrc_example_package import rearrange_dice_env
 from rrc_example_package.example import PointAtDieGoalPositionsPolicy
