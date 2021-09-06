@@ -46,12 +46,11 @@ def image2coords(camera_observation, camera_params, write_images=False):
     len_out = 0
     for i, c in enumerate(camera_observation.cameras):
         copy = convert_image(c.image.copy())
-        print(copy.shape)
         grey = cv2.cvtColor(convert_image(c.image), cv2.COLOR_BGR2GRAY)
-        grey = grey * segment_image(cv2.cvtColor(convert_image(c.image), cv2.COLOR_RGB2BGR))
+        grey = grey * segment_image(convert_image(c.image))
         if write_images:
             cv2.imwrite('grey{}.png'.format(i), grey)
-            cv2.imwrite('seg{}.png'.format(i),segment_image(cv2.cvtColor(convert_image(c.image), cv2.COLOR_RGB2BGR)))
+            cv2.imwrite('seg{}.png'.format(i),segment_image(convert_image(c.image)))
         decrease_noise = cv2.fastNlMeansDenoising(grey, 10, 15, 7, 21)
         blurred = cv2.GaussianBlur(decrease_noise, (3, 3), 0)
         canny = cv2.Canny(blurred, 10, 30)
