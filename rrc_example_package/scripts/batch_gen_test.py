@@ -442,7 +442,7 @@ env.reset()
 optim = torch.optim.Adam(filter(lambda p: p.requires_grad, resnet.parameters()), lr=0.0001)
 min_cost = 300000
 while True:
-
+    optim.zero_grad()
     input_batch, goals = generate_batch(env, 16)
     input_batch = torch.from_numpy(input_batch).float()
     goals = torch.from_numpy(goals).float()
