@@ -8,7 +8,7 @@ import numpy as np
 import cv2
 import imutils
 import trifinger_cameras.py_tricamera_types as tricamera
-from trifinger_cameras.utils import convert_image
+from trifinger_cameras import utils
 from rrc_example_package import rearrange_dice_env
 from rrc_example_package.example import PointAtDieGoalPositionsPolicy
 import trifinger_simulation.tasks.rearrange_dice as task
@@ -43,6 +43,8 @@ def image2coords(camera_observation, camera_params, write_images=False, simulati
     len_out = 0
     if simulation:
         convert_image=process_sim_image
+    else:
+        convert_image = utils.convert_image
     for i, c in enumerate(camera_observation.cameras):
         copy = convert_image(c.image.copy())
         grey = cv2.cvtColor(convert_image(c.image), cv2.COLOR_BGR2GRAY)
