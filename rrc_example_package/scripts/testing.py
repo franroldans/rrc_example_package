@@ -1,8 +1,5 @@
 #!/usr/bin/env python3
-"""Demo on how to run the robot using the Gym environment
-This demo creates a RealRobotRearrangeDiceEnv environment and runs one episode
-using a dummy policy.
-"""
+
 import sys
 import numpy as np
 import cv2
@@ -42,15 +39,19 @@ def get_2d_center(x, y, w, h):
     return (round((x + x + w) / 2), round((y+y+h) / 2))
     
 
-def image2coords(camera_observation, camera_params, write_images=False):
+def image2coords(camera_observation, camera_params, simulation=False, write_images=False):
     len_out = 0
     for i, c in enumerate(camera_observation.cameras):
         copy = convert_image(c.image.copy())
-        grey = cv2.cvtColor(convert_image(c.image), cv2.COLOR_BGR2GRAY)
-        grey = grey * segment_image(convert_image(c.image))
+        if simultion:
+            c.image = cv2.cvtColor(c.image, cv2.COLOR_RGB2BGR)
+        else:
+            c.image = convert_image(c.image)
+        grey = cv2.cvtColor(c.image, cv2.COLOR_BGR2GRAY)
+        grey = grey * segment_image(c.image)
         if write_images:
             cv2.imwrite('grey{}.png'.format(i), grey)
-            cv2.imwrite('seg{}.png'.format(i),segment_image(convert_image(c.image)))
+            cv2.imwrite('seg{}.png'.format(i),segment_image(c.image))
         decrease_noise = cv2.fastNlMeansDenoising(grey, 10, 15, 7, 21)
         blurred = cv2.GaussianBlur(decrease_noise, (3, 3), 0)
         canny = cv2.Canny(blurred, 10, 30)
@@ -92,7 +93,7 @@ def main():
         image = convert_image(observation.cameras[0].image)"""
     #camera_observation = env.platform.get_camera_observation(0)
     camera_params = env.camera_params
-    coords = image2coords(camera_observation, camera_params, True)
+    coords = image2coords(camera_observation, camera_params, False, True)
     print(coords)
     
 
