@@ -43,7 +43,7 @@ def image2coords(camera_observation, camera_params, simulation=False, write_imag
     len_out = 0
     for i, c in enumerate(camera_observation.cameras):
         copy = convert_image(c.image.copy())
-        if simultion:
+        if simulation:
             c.image = cv2.cvtColor(c.image, cv2.COLOR_RGB2BGR)
         else:
             c.image = convert_image(c.image)
