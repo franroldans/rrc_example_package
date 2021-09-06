@@ -7,7 +7,8 @@ import sys
 import numpy as np
 import cv2
 import imutils
-
+import trifinger_object_tracking.py_tricamera_types as tricamera
+from trifinger_cameras.utils import convert_image
 from rrc_example_package import rearrange_dice_env
 from rrc_example_package.example import PointAtDieGoalPositionsPolicy
 import trifinger_simulation.tasks.rearrange_dice as task
@@ -84,7 +85,12 @@ def main():
     )
     env.reset()
 
-    camera_observation = env.platform.get_camera_observation(0)
+
+    log_reader = tricamera.LogReader("camera_data.dat")
+    camera_observation = log_reader.data[0]
+    """for observation in log_reader.data:
+        image = convert_image(observation.cameras[0].image)
+    camera_observation = env.platform.get_camera_observation(0)"""
     camera_params = env.camera_params
     coords = image2coords(camera_observation, camera_params, True)
     print(coords)
