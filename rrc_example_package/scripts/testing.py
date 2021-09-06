@@ -86,7 +86,7 @@ def main():
     env.reset()
 
 
-    log_reader = tricamera.LogReader("camera_data.dat")
+    log_reader = tricamera.LogReader("./camera_data.dat")
     camera_observation = log_reader.data[0]
     """for observation in log_reader.data:
         image = convert_image(observation.cameras[0].image)
