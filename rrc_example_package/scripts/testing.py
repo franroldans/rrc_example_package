@@ -13,6 +13,10 @@ from rrc_example_package import rearrange_dice_env
 from rrc_example_package.example import PointAtDieGoalPositionsPolicy
 import trifinger_simulation.tasks.rearrange_dice as task
 from trifinger_object_tracking.py_lightblue_segmenter import segment_image
+
+def process_sim_image(image):
+    return cv2.cvtColor(c.image, cv2.COLOR_RGB2BGR)
+
 def image2world(image_point, camera_parameters, z = 0.011):
     
     # get camera position and orientation separately
@@ -35,8 +39,10 @@ def image2world(image_point, camera_parameters, z = 0.011):
 def get_2d_center(x, y, w, h):
     return (round((x + x + w) / 2), round((y+y+h) / 2))
     
-def image2coords(camera_observation, camera_params, write_images=False):
+def image2coords(camera_observation, camera_params, write_images=False, simulation=False):
     len_out = 0
+    if simulation:
+        convert_image=process_sim_image
     for i, c in enumerate(camera_observation.cameras):
         copy = convert_image(c.image.copy())
         grey = cv2.cvtColor(convert_image(c.image), cv2.COLOR_BGR2GRAY)
