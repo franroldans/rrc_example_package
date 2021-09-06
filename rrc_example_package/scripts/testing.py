@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
-
+"""Demo on how to run the robot using the Gym environment
+This demo creates a RealRobotRearrangeDiceEnv environment and runs one episode
+using a dummy policy.
+"""
 import sys
 import numpy as np
 import cv2
@@ -10,8 +13,6 @@ from rrc_example_package import rearrange_dice_env
 from rrc_example_package.example import PointAtDieGoalPositionsPolicy
 import trifinger_simulation.tasks.rearrange_dice as task
 from trifinger_object_tracking.py_lightblue_segmenter import segment_image
-
-
 def image2world(image_point, camera_parameters, z = 0.011):
     
     # get camera position and orientation separately
@@ -21,37 +22,28 @@ def image2world(image_point, camera_parameters, z = 0.011):
     camMat = np.asarray(camera_parameters.camera_matrix)
     iRot = np.linalg.inv(rmat)
     iCam = np.linalg.inv(camMat)
-
     uvPoint = np.ones((3, 1))
     # Image point
     uvPoint[0, 0] = image_point[0]
     uvPoint[1, 0] = image_point[1]
-
     tempMat = np.matmul(np.matmul(iRot, iCam), uvPoint)
     tempMat2 = np.matmul(iRot, tvec)
-
     s = (z + tempMat2[2, 0]) / tempMat[2, 0]
     wcPoint = np.matmul(iRot, (np.matmul(s * iCam, uvPoint) - tvec))
     wcPoint[2] = z #Hardcoded as z is always 0.011 if constrained to only push cube
     return tuple(map(float,wcPoint))
-
 def get_2d_center(x, y, w, h):
     return (round((x + x + w) / 2), round((y+y+h) / 2))
     
-
-def image2coords(camera_observation, camera_params, simulation=False, write_images=False):
+def image2coords(camera_observation, camera_params, write_images=False):
     len_out = 0
     for i, c in enumerate(camera_observation.cameras):
         copy = convert_image(c.image.copy())
-        if simulation:
-            c.image = cv2.cvtColor(c.image, cv2.COLOR_RGB2BGR)
-        else:
-            c.image = convert_image(c.image)
-        grey = cv2.cvtColor(c.image, cv2.COLOR_BGR2GRAY)
-        grey = grey * segment_image(c.image)
+        grey = cv2.cvtColor(convert_image(c.image), cv2.COLOR_BGR2GRAY)
+        grey = grey * segment_image(convert_image(c.image))
         if write_images:
             cv2.imwrite('grey{}.png'.format(i), grey)
-            cv2.imwrite('seg{}.png'.format(i),segment_image(c.image))
+            cv2.imwrite('seg{}.png'.format(i),segment_image(convert_image(c.image)))
         decrease_noise = cv2.fastNlMeansDenoising(grey, 10, 15, 7, 21)
         blurred = cv2.GaussianBlur(decrease_noise, (3, 3), 0)
         canny = cv2.Canny(blurred, 10, 30)
@@ -78,25 +70,20 @@ def image2coords(camera_observation, camera_params, simulation=False, write_imag
     return coords
     
 def main():
-
     env = rearrange_dice_env.RealRobotRearrangeDiceEnv(
         rearrange_dice_env.ActionType.POSITION,
         goal= None,
         step_size=1,
     )
     env.reset()
-
-
     log_reader = tricamera.LogReader("./camera_data.dat")
     camera_observation = log_reader.data[0]
     """for observation in log_reader.data:
         image = convert_image(observation.cameras[0].image)"""
     #camera_observation = env.platform.get_camera_observation(0)
     camera_params = env.camera_params
-    coords = image2coords(camera_observation, camera_params, False, True)
+    coords = image2coords(camera_observation, camera_params, True)
     print(coords)
     
-
-
 if __name__ == "__main__":
     main()
