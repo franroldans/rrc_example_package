@@ -46,6 +46,7 @@ def image2coords(camera_observation, camera_params, write_images=False):
     len_out = 0
     for i, c in enumerate(camera_observation.cameras):
         copy = c.image.copy()
+        print(copy.shape)
         grey = cv2.cvtColor(c.image, cv2.COLOR_BGR2GRAY)
         grey = grey * segment_image(cv2.cvtColor(c.image, cv2.COLOR_RGB2BGR))
         if write_images:
