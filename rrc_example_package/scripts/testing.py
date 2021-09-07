@@ -7,6 +7,7 @@ import sys
 import numpy as np
 import cv2
 import imutils
+import time
 import trifinger_cameras.py_tricamera_types as tricamera
 from trifinger_cameras import utils
 from rrc_example_package import rearrange_dice_env
@@ -40,6 +41,7 @@ def get_2d_center(x, y, w, h):
     return (round((x + x + w) / 2), round((y+y+h) / 2))
     
 def image2coords(camera_observation, camera_params, write_images=False, simulation=False):
+    start = time.time()
     len_out = 0
     if simulation:
         convert_image=process_sim_image
@@ -75,6 +77,8 @@ def image2coords(camera_observation, camera_params, write_images=False, simulati
         if len_out < len(out):
             coords = out
             len_out = len(out)
+    end = time.time()
+    print(end - start)
     return coords
     
 def main():
