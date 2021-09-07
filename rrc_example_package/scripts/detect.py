@@ -19,7 +19,7 @@ import trifinger_cameras.py_tricamera_types as tricamera
 
 log_reader = tricamera.LogReader("./camera_data.dat")
 camera_observation = log_reader.data[0]
-im = utils.convert_image(observation.cameras[0].image)
+im = utils.convert_image(camera_observation.cameras[0].image)
 
 cfg = get_cfg()
 # add project-specific config (e.g., TensorMask) here if you're not running a model in detectron2's core library
