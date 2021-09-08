@@ -14,7 +14,11 @@ import trifinger_simulation.tasks.rearrange_dice as task
 from trifinger_object_tracking.py_lightblue_segmenter import segment_image
 import torch.nn.functional as F
 import warnings
-
+from torch.models.detection import _utils as det_utils
+from torch.models.detection.backbone_utils import _validate_trainable_layers
+from torch.models.detection.transform import GeneralizedRCNNTransform
+from torch.models import vgg
+from torchvision.ops import boxes as box_ops
 from collections import OrderedDict
 from torch import nn, Tensor
 from typing import Any, Dict, List, Optional, Tuple
