@@ -13,8 +13,8 @@ from rrc_example_package import rearrange_dice_env
 import trifinger_simulation.tasks.rearrange_dice as task
 from trifinger_object_tracking.py_lightblue_segmenter import segment_image
 
-def my_ssd300_vgg16(pretrained: bool = False, progress: bool = True, num_classes: int = 91,
-                 pretrained_backbone: bool = True, trainable_backbone_layers: Optional[int] = None, **kwargs: Any):
+def my_ssd300_vgg16(pretrained= False, progress= True, num_classes= 91,
+                 pretrained_backbone = True, trainable_backbone_layers = None, **kwargs):
     """Constructs an SSD model with input size 300x300 and a VGG16 backbone.
 
     Reference: `"SSD: Single Shot MultiBox Detector" <https://arxiv.org/abs/1512.02325>`_.
