@@ -8,7 +8,7 @@ import itertools
 import torchvision.models as models
 import torch
 from torchvision import transforms
-
+from torchvision.models.detection.anchor_utils import DefaultBoxGenerator
 from rrc_example_package import rearrange_dice_env
 import trifinger_simulation.tasks.rearrange_dice as task
 from trifinger_object_tracking.py_lightblue_segmenter import segment_image
