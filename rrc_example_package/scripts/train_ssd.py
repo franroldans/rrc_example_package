@@ -95,10 +95,10 @@ def generate_goal_mask(camera_parameters, goal):
 
 
 def bbox_generator(camera_params, goal, i):
+  print(goal)
   mask = generate_goal_mask(camera_params, goal)
   cv2.imwrite('mask{}.png'.format(i), mask)
   contour = cv2.findContours(mask.astype(np.uint8).copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
-  print(contour)
   #contour = contour[0] if len(contour) == 2 else contour[1]
   x, y, w, h = cv2.boundingRect(contour[0])
   return (x, x + w, y, y + h)
@@ -136,5 +136,4 @@ model = models.detection.ssd300_vgg16()
 env = rearrange_dice_env.RealRobotRearrangeDiceEnv(rearrange_dice_env.ActionType.POSITION,goal= None,step_size=1,)
 env.reset()
 mask, bboxes = generate_batch(env, 1)
-print(mask.shape)
-print(bboxes)
+
