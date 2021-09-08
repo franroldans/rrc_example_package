@@ -297,6 +297,7 @@ class SSD(nn.Module):
         if targets is not None:
             for target_idx, target in enumerate(targets):
                 boxes = target["boxes"]
+		print(boxes.shape)
                 degenerate_boxes = boxes[:, 2:] <= boxes[:, :2]
                 if degenerate_boxes.any():
                     bb_idx = torch.where(degenerate_boxes.any(dim=1))[0][0]
