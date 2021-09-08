@@ -101,7 +101,7 @@ def bbox_generator(camera_params, goal, i):
   contour = cv2.findContours(mask.astype(np.uint8).copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
   #contour = contour[0] if len(contour) == 2 else contour[1]
   x, y, w, h = cv2.boundingRect(contour[0])
-  return (x, x + w, y, y + h)
+  return np.array([x, x + w, y, y + h])
 
 def generate_batch(env, batch_size):
   print(env.camera_params[0])
