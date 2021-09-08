@@ -22,6 +22,7 @@ from torchvision.ops import boxes as box_ops
 from collections import OrderedDict
 from torch import nn, Tensor
 from typing import Any, Dict, List, Optional, Tuple
+from torchvision.models.utils import load_state_dict_from_url
 
 __all__ = ['SSD', 'ssd300_vgg16']
 
