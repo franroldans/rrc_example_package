@@ -94,8 +94,9 @@ def generate_goal_mask(camera_parameters, goal):
     return mask
 
 
-def bbox_generator(camera_params, goal):
+def bbox_generator(camera_params, goal, i):
   mask = generate_goal_mask(camera_params, goal)
+  cv2.imwrite('mask{}.png'.format(i), mask)
   contour = cv2.findContours(mask.astype(np.uint8).copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
   print(contour)
   #contour = contour[0] if len(contour) == 2 else contour[1]
@@ -108,7 +109,7 @@ def generate_batch(env, batch_size):
   for i in range(batch_size):
     g_ = task.sample_goal()
     print(g_)
-    g_mask = generate_goal_mask(env.camera_params[0], g_)
+    g_mask = generate_goal_mask(env.camera_params[0], g_, i)
     batch[i] = np.stack((g_mask,)*3, axis=0)
     for idx, g in enumerate(g_):
       bboxes[i, idx, :] = bbox_generator(env.camera_params[0], g)
