@@ -23,6 +23,26 @@ from collections import OrderedDict
 from torch import nn, Tensor
 from typing import Any, Dict, List, Optional, Tuple
 
+__all__ = ['SSD', 'ssd300_vgg16']
+
+model_urls = {
+    'ssd300_vgg16_coco': 'https://download.pytorch.org/models/ssd300_vgg16_coco-b556d3b4.pth',
+}
+
+backbone_urls = {
+    # We port the features of a VGG16 backbone trained by amdegroot because unlike the one on TorchVision, it uses the
+    # same input standardization method as the paper. Ref: https://s3.amazonaws.com/amdegroot-models/vgg16_reducedfc.pth
+    'vgg16_features': 'https://download.pytorch.org/models/vgg16_features-amdegroot.pth'
+}
+
+
+def _xavier_init(conv: nn.Module):
+    for layer in conv.modules():
+        if isinstance(layer, nn.Conv2d):
+            torch.nn.init.xavier_uniform_(layer.weight)
+            if layer.bias is not None:
+                torch.nn.init.constant_(layer.bias, 0.0)
+		
 class SSD(nn.Module):
     """
     Implements SSD architecture from `"SSD: Single Shot MultiBox Detector" <https://arxiv.org/abs/1512.02325>`_.
