@@ -185,7 +185,7 @@ def generate_batch(env, batch_size):
     for idx, g in enumerate(g_):
         bboxes.append(bbox_generator(env.camera_params[0], g, idx))
     detections.append({'boxes': torch.from_numpy(np.array(bboxes)).float(), 
-		   'labels': np.array([1])})
+		   'labels': torch.from_numpy(np.array([1])).float()})
     #detections.append(bboxes)
   return batch, detections
 
