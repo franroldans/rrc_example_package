@@ -23,6 +23,57 @@ FACE_CORNERS = (
     (4, 5, 6, 7),
 )
 
+
+def generate_goal_mask(camera_parameters, goal):
+    """Generate goal masks that can be used with :func:`evaluate_state`.
+    A goal mask is a single-channel image where the areas at which dice are
+    supposed to be placed are white and everything else is black.  So it
+    corresponds more or less to a segmentation mask where all dice are at the
+    goal positions.
+    For rendering the mask, :data:`TARGET_WIDTH` is used for the die width to
+    add some tolerance.
+    Args:
+        camera_parameters: List of camera parameters, one per camera.
+        goal: The goal die positions.
+    Returns:
+        List of masks.  The number and order of masks corresponds to the input
+        ``camera_parameters``.
+    """
+    #masks = []
+    #for cam in camera_parameters:
+    #mask = np.zeros((camera_parameters.image_height, camera_parameters.image_width), dtype=np.uint8)
+    mask = np.zeros((270, 270), dtype=np.uint8)
+
+    # get camera position and orientation separately
+    tvec = camera_parameters.tf_world_to_camera[:3, 3]
+    rmat = camera_parameters.tf_world_to_camera[:3, :3]
+    rvec = Rotation.from_matrix(rmat).as_rotvec()
+
+    for pos in goal:
+        corners = get_cell_corners_3d(pos)
+
+        # project corner points into the image
+        projected_corners, _ = cv2.projectPoints(
+            corners,
+            rvec,
+            tvec,
+            camera_parameters.camera_matrix,
+            camera_parameters.distortion_coefficients,
+        )
+
+        # draw faces in mask
+        for face_corner_idx in FACE_CORNERS:
+            points = np.array(
+                [projected_corners[i] for i in face_corner_idx],
+                dtype=np.int32,
+            )
+            mask = cv2.fillConvexPoly(mask, points, 255)
+
+        #masks.append(mask)
+
+    return mask
+
+
 def bbox_generator(camera_params, goal):
   mask = generate_goal_mask(camera_params, goal)
   contour = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
