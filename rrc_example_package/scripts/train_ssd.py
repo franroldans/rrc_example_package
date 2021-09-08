@@ -109,10 +109,10 @@ def generate_batch(env, batch_size):
   for i in range(batch_size):
     g_ = task.sample_goal()
     print(g_)
-    g_mask = generate_goal_mask(env.camera_params[0], g_, i)
+    g_mask = generate_goal_mask(env.camera_params[0], g_)
     batch[i] = np.stack((g_mask,)*3, axis=0)
     for idx, g in enumerate(g_):
-      bboxes[i, idx, :] = bbox_generator(env.camera_params[0], g)
+      bboxes[i, idx, :] = bbox_generator(env.camera_params[0], g, idx)
   return batch, bboxes
 
 """def generate_batch(env, batch_size):
