@@ -259,7 +259,7 @@ class SSD(nn.Module):
 
            
         bbox_loss = torch.stack(bbox_loss)
-
+        N = max(1, num_foreground)
         return bbox_loss.sum() / N,
 
 
