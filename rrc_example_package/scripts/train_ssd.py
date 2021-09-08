@@ -97,7 +97,7 @@ def generate_goal_mask(camera_parameters, goal):
 def bbox_generator(camera_params, goal, i):
   print(goal)
   mask = generate_goal_mask(camera_params, goal)
-  cv2.imwrite('mask{}.png'.format(i), mask)
+  #cv2.imwrite('mask{}.png'.format(i), mask)
   contour = cv2.findContours(mask.astype(np.uint8).copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
   #contour = contour[0] if len(contour) == 2 else contour[1]
   x, y, w, h = cv2.boundingRect(contour[0])
