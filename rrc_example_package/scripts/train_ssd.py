@@ -106,14 +106,15 @@ def bbox_generator(camera_params, goal, i):
 def generate_batch(env, batch_size):
   print(env.camera_params[0])
   batch = np.ones((batch_size, 3, 270, 270))
-  bboxes = np.ones((batch_size, 25, 4))
+  bboxes = np.ones((batch_size))
   for i in range(batch_size):
     g_ = task.sample_goal()
     #print(g_)
     g_mask = generate_goal_mask(env.camera_params[0], g_)
     batch[i] = np.stack((g_mask,)*3, axis=0)
     for idx, g in enumerate(g_):
-      bboxes[i, idx, :] = bbox_generator(env.camera_params[0], g, idx)
+      bboxes[i] = {bbox_generator('boxes': env.camera_params[0], g, idx, 
+				 'label': 1)}
   return batch, bboxes
 
 """def generate_batch(env, batch_size):
@@ -136,6 +137,10 @@ def generate_batch(env, batch_size):
 model = models.detection.ssd300_vgg16()
 env = rearrange_dice_env.RealRobotRearrangeDiceEnv(rearrange_dice_env.ActionType.POSITION,goal= None,step_size=1,)
 env.reset()
-mask, bboxes = generate_batch(env, 4)
+mask, bboxes = generate_batch(env, 16)
 print(bboxes)
 
+
+#while True:
+#  mask, bboxes = generate_batch(env, 16)
+#  model.forward(mask, bboxes)
