@@ -260,7 +260,9 @@ class SSD(nn.Module):
            
         bbox_loss = torch.stack(bbox_loss)
         N = max(1, num_foreground)
-        return bbox_loss.sum() / N,
+	out_loss = bbox_loss.sum() / N
+	print("Loss: {}".format(out_loss))
+        return out_loss
 
 
     def forward(self, images: List[Tensor],
@@ -660,7 +662,6 @@ def bbox_generator(camera_params, goal, i):
   return np.array([x, y, x + w, y + h])
 
 def generate_batch(env, batch_size):
-  print(env.camera_params[0])
   batch = np.ones((batch_size, 3, 270, 270))
   detections = []
   for i in range(batch_size):
