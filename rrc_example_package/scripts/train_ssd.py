@@ -32,7 +32,7 @@ def bbox_generator(camera_params, goal):
 
 def generate_batch(env, batch_size):
   batch = np.ones((batch_size, 3, 270, 270))
-	bboxes = np.ones((batch_size, 25, 4))
+  bboxes = np.ones((batch_size, 25, 4))
   for i in range(batch_size):
     g_ = task.sample_goal()
     print(g_)
