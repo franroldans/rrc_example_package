@@ -13,6 +13,75 @@ from rrc_example_package import rearrange_dice_env
 import trifinger_simulation.tasks.rearrange_dice as task
 from trifinger_object_tracking.py_lightblue_segmenter import segment_image
 
+def my_ssd300_vgg16(pretrained: bool = False, progress: bool = True, num_classes: int = 91,
+                 pretrained_backbone: bool = True, trainable_backbone_layers: Optional[int] = None, **kwargs: Any):
+    """Constructs an SSD model with input size 300x300 and a VGG16 backbone.
+
+    Reference: `"SSD: Single Shot MultiBox Detector" <https://arxiv.org/abs/1512.02325>`_.
+
+    The input to the model is expected to be a list of tensors, each of shape [C, H, W], one for each
+    image, and should be in 0-1 range. Different images can have different sizes but they will be resized
+    to a fixed size before passing it to the backbone.
+
+    The behavior of the model changes depending if it is in training or evaluation mode.
+
+    During training, the model expects both the input tensors, as well as a targets (list of dictionary),
+    containing:
+
+        - boxes (``FloatTensor[N, 4]``): the ground-truth boxes in ``[x1, y1, x2, y2]`` format, with
+          ``0 <= x1 < x2 <= W`` and ``0 <= y1 < y2 <= H``.
+        - labels (Int64Tensor[N]): the class label for each ground-truth box
+
+    The model returns a Dict[Tensor] during training, containing the classification and regression
+    losses.
+
+    During inference, the model requires only the input tensors, and returns the post-processed
+    predictions as a List[Dict[Tensor]], one for each input image. The fields of the Dict are as
+    follows, where ``N`` is the number of detections:
+
+        - boxes (``FloatTensor[N, 4]``): the predicted boxes in ``[x1, y1, x2, y2]`` format, with
+          ``0 <= x1 < x2 <= W`` and ``0 <= y1 < y2 <= H``.
+        - labels (Int64Tensor[N]): the predicted labels for each detection
+        - scores (Tensor[N]): the scores for each detection
+
+    Example:
+
+        >>> model = torchvision.models.detection.ssd300_vgg16(pretrained=True)
+        >>> model.eval()
+        >>> x = [torch.rand(3, 300, 300), torch.rand(3, 500, 400)]
+        >>> predictions = model(x)
+
+    Args:
+        pretrained (bool): If True, returns a model pre-trained on COCO train2017
+        progress (bool): If True, displays a progress bar of the download to stderr
+        num_classes (int): number of output classes of the model (including the background)
+        pretrained_backbone (bool): If True, returns a model with backbone pre-trained on Imagenet
+        trainable_backbone_layers (int): number of trainable (not frozen) resnet layers starting from final block.
+            Valid values are between 0 and 5, with 5 meaning all backbone layers are trainable.
+    """
+    if "size" in kwargs:
+        warnings.warn("The size of the model is already fixed; ignoring the argument.")
+
+    trainable_backbone_layers = models.detection.ssd._validate_trainable_layers(
+        pretrained or pretrained_backbone, trainable_backbone_layers, 5, 5)
+
+    if pretrained:
+        # no need to download the backbone if pretrained is set
+        pretrained_backbone = False
+
+    backbone = models.detection.ssd._vgg_extractor("vgg16_features", False, progress, pretrained_backbone, trainable_backbone_layers)
+    anchor_generator = DefaultBoxGenerator([[2], [2, 3], [2, 3], [2, 3], [2], [2]],
+                                           scales=[0.07, 0.15, 0.33, 0.51, 0.69, 0.87, 1.05],
+                                           steps=[8, 16, 32, 64, 100, 300])
+
+    defaults = {
+        # Rescale the input in a way compatible to the backbone
+        "image_mean": [0.48235, 0.45882, 0.40784],
+        "image_std": [1.0 / 255.0, 1.0 / 255.0, 1.0 / 255.0],  # undo the 0-1 scaling of toTensor
+    }
+    kwargs = {**defaults, **kwargs}
+    model = models.detection.ssd.SSD(backbone, anchor_generator, (270, 270), num_classes, **kwargs)
+    return model
 
 FACE_CORNERS = (
     (0, 1, 2, 3),
@@ -137,7 +206,7 @@ def generate_batch(env, batch_size):
 	return batch, goals"""
 
 
-model = models.detection.ssd300_vgg16(num_classes=1)
+model = my_ssd300_vgg16(num_classes=1)
 env = rearrange_dice_env.RealRobotRearrangeDiceEnv(rearrange_dice_env.ActionType.POSITION,goal= None,step_size=1,)
 env.reset()
 #mask, bboxes = generate_batch(env, 16)
