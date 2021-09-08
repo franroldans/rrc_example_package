@@ -40,7 +40,7 @@ def generate_batch(env, batch_size):
     batch[i] = np.stack((g_mask,)*3, axis=-1)
     for idx, g in enumerate(g_):
       bboxes[i, idx, :] = bbox_generator(env.camera_params[0], g)
-   return g_mask, bboxes
+  return g_mask, bboxes
 
 """def generate_batch(env, batch_size):
   batch = np.ones((batch_size, 3, 270, 270))
