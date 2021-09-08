@@ -136,13 +136,13 @@ def generate_batch(env, batch_size):
 	return batch, goals"""
 
 
-model = models.detection.ssd300_vgg16()
+model = models.detection.ssd300_vgg16(num_classes=1)
 env = rearrange_dice_env.RealRobotRearrangeDiceEnv(rearrange_dice_env.ActionType.POSITION,goal= None,step_size=1,)
 env.reset()
-mask, bboxes = generate_batch(env, 16)
-print(bboxes)
+#mask, bboxes = generate_batch(env, 16)
+#print(bboxes)
 
 
-#while True:
-#  mask, bboxes = generate_batch(env, 16)
-#  model.forward(mask, bboxes)
+while True:
+  mask, bboxes = generate_batch(env, 16)
+  model.forward(mask, bboxes)
