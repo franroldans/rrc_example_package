@@ -106,16 +106,18 @@ def bbox_generator(camera_params, goal, i):
 def generate_batch(env, batch_size):
   print(env.camera_params[0])
   batch = np.ones((batch_size, 3, 270, 270))
-  bboxes = []
+  detections = []
   for i in range(batch_size):
     g_ = task.sample_goal()
     #print(g_)
     g_mask = generate_goal_mask(env.camera_params[0], g_)
     batch[i] = np.stack((g_mask,)*3, axis=0)
+    bboxes=[]
     for idx, g in enumerate(g_):
       bboxes.append({'boxes': bbox_generator(env.camera_params[0], g, idx), 
 		   'label': 1})
-  return batch, bboxes
+    detections.append(bboxes)
+  return batch, detections
 
 """def generate_batch(env, batch_size):
   batch = np.ones((batch_size, 3, 270, 270))
