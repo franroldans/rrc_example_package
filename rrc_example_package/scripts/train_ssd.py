@@ -23,6 +23,26 @@ FACE_CORNERS = (
     (4, 5, 6, 7),
 )
 
+def get_cell_corners_3d(pos):
+    """Get 3d positions of the corners of the cell at the given position."""
+    d = 0.022 / 2
+    nppos = np.asarray(pos)
+
+    # order of the corners is the same as in the cube model of the
+    # trifinger_object_tracking package
+    # people.tue.mpg.de/mpi-is-software/robotfingers/docs/trifinger_object_tracking/doc/cube_model.html
+    return np.array(
+        (
+            nppos + (d, -d, d),
+            nppos + (d, d, d),
+            nppos + (-d, d, d),
+            nppos + (-d, -d, d),
+            nppos + (d, -d, -d),
+            nppos + (d, d, -d),
+            nppos + (-d, d, -d),
+            nppos + (-d, -d, -d),
+        )
+    )
 
 def generate_goal_mask(camera_parameters, goal):
     """Generate goal masks that can be used with :func:`evaluate_state`.
