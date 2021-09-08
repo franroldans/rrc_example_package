@@ -114,7 +114,8 @@ def generate_batch(env, batch_size):
     batch[i] = np.stack((g_mask,)*3, axis=0)
     bboxes=[]
     for idx, g in enumerate(g_):
-      bboxes.append({'boxes': bbox_generator(env.camera_params[0], g, idx), 
+        bboxes.append(bbox_generator(env.camera_params[0], g, idx))
+    detection.append({'boxes': bboxes, 
 		   'label': 1})
     #detections.append(bboxes)
   return batch, bboxes
