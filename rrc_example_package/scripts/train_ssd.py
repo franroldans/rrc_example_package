@@ -116,8 +116,8 @@ def generate_batch(env, batch_size):
     for idx, g in enumerate(g_):
       bboxes.append({'boxes': bbox_generator(env.camera_params[0], g, idx), 
 		   'label': 1})
-    detections.append(bboxes)
-  return batch, detections
+    #detections.append(bboxes)
+  return batch, bboxes
 
 """def generate_batch(env, batch_size):
   batch = np.ones((batch_size, 3, 270, 270))
