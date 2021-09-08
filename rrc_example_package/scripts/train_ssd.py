@@ -104,6 +104,7 @@ def bbox_generator(camera_params, goal, i):
   return (x, x + w, y, y + h)
 
 def generate_batch(env, batch_size):
+  print(env.camera_params[0])
   batch = np.ones((batch_size, 3, 270, 270))
   bboxes = np.ones((batch_size, 25, 4))
   for i in range(batch_size):
