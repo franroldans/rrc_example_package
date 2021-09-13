@@ -695,7 +695,7 @@ def generate_batch(env, batch_size):
 		batch[i] = seg_mask
 	return batch, goals"""
 
-train = True
+train = False
 model = my_ssd300_vgg16(num_classes=1)
 env = rearrange_dice_env.RealRobotRearrangeDiceEnv(rearrange_dice_env.ActionType.POSITION,goal= None,step_size=1,)
 env.reset()
