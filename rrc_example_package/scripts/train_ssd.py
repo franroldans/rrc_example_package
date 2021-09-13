@@ -703,12 +703,12 @@ if train:
 	optim = torch.optim.Adam(filter(lambda p: p.requires_grad, model.parameters()), lr=0.0001)
 	min_cost = 20000
 	while True:
-	  optim.zero_grad()
-	  mask, bboxes = generate_batch(env, 4)
-	  loss = model.forward(torch.from_numpy(mask).float(), bboxes)
-	  loss.backward()
-	  optim.step()
-	  if loss < min_cost:
+		  optim.zero_grad()
+		  mask, bboxes = generate_batch(env, 4)
+		  loss = model.forward(torch.from_numpy(mask).float(), bboxes)
+		  loss.backward()
+		  optim.step()
+		  if loss < min_cost:
 			min_cost = loss
 			print('Saving model')
 			torch.save(model.state_dict(), './ssd_test.pth')
