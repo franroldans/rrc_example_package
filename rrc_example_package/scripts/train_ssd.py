@@ -563,8 +563,7 @@ def my_ssd300_vgg16(pretrained= False, progress= True, num_classes= 91,
 
     backbone = _vgg_extractor("vgg16_features", False, progress, pretrained_backbone, trainable_backbone_layers)
     anchor_generator = DefaultBoxGenerator([[2], [2, 3], [2, 3]],
-                                           scales=[0.07, 0.15, 0.33, 0.51],
-                                           steps=[8, 16, 32])
+                                           min_ratio=0.07, max_ratio=0.15)
 
     defaults = {
         # Rescale the input in a way compatible to the backbone
