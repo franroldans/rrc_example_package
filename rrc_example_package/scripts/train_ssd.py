@@ -356,6 +356,7 @@ class SSD(nn.Module):
         detections: List[Dict[str, Tensor]] = []
 
         for boxes, scores, anchors, image_shape in zip(bbox_regression, pred_scores, image_anchors, image_shapes):
+            print(scores)
             boxes = self.box_coder.decode_single(boxes, anchors)
             boxes = box_ops.clip_boxes_to_image(boxes, image_shape)
             print(boxes.shape)
