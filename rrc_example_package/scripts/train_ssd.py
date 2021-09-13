@@ -376,7 +376,7 @@ class SSD(nn.Module):
 
                 image_boxes.append(boxes)
                 image_scores.append(score)
-                image_labels.append(torch.full_like(score, fill_value=label, dtype=torch.int64, device=device))
+                image_labels.append(torch.full_like(torch.from_numpy(score), fill_value=label, dtype=torch.int64, device=device))
 
             image_boxes = torch.cat(image_boxes, dim=0)
             image_scores = torch.cat(image_scores, dim=0)
