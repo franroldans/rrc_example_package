@@ -707,6 +707,6 @@ while True:
   loss = model.forward(torch.from_numpy(mask).float(), bboxes)
   loss.backward()
   optim.step()
-  if cost < min_cost:
-      min_cost = cost
+  if loss < min_cost:
+      min_cost = loss
       torch.save(model.state_dict(), './ssd_test.pth')
