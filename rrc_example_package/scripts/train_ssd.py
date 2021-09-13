@@ -563,8 +563,8 @@ def my_ssd300_vgg16(pretrained= False, progress= True, num_classes= 91,
 
     backbone = _vgg_extractor("vgg16_features", False, progress, pretrained_backbone, trainable_backbone_layers)
     anchor_generator = DefaultBoxGenerator([[2], [2, 3], [2, 3], [2, 3], [2], [2]],
-                                           scales=[0.07, 0.15, 0.33, 0.51, 0.69, 0.87, 1.05],
-                                           steps=[8, 16, 32, 64, 100, 300])
+                                           scales=[0.07, 0.15],
+                                           steps=[8, 16, 32])
 
     defaults = {
         # Rescale the input in a way compatible to the backbone
@@ -696,7 +696,7 @@ def generate_batch(env, batch_size):
 		batch[i] = seg_mask
 	return batch, goals"""
 
-train = False
+train = True
 model = my_ssd300_vgg16(num_classes=1)
 env = rearrange_dice_env.RealRobotRearrangeDiceEnv(rearrange_dice_env.ActionType.POSITION,goal= None,step_size=1,)
 env.reset()
@@ -714,10 +714,10 @@ if train:
 		  if loss < min_cost:
 		  	min_cost = loss
 		  	print('Saving model')
-		  	torch.save(model.state_dict(), './ssd_test.pth')
+		  	torch.save(model.state_dict(), './ssd_test_newAnchors.pth')
 else:
 	mask, bboxes = generate_batch(env, 1)
-	model.load_state_dict(torch.load('./ssd_test.pth', map_location = torch.device('cpu')))
+	model.load_state_dict(torch.load('./ssd_test_newAnchors.pth', map_location = torch.device('cpu')))
 	model.eval()
 	preds = model.forward(torch.from_numpy(mask).float())
 	print(preds)
