@@ -699,7 +699,7 @@ env = rearrange_dice_env.RealRobotRearrangeDiceEnv(rearrange_dice_env.ActionType
 env.reset()
 #mask, bboxes = generate_batch(env, 16)
 #print(bboxes)
-optim = torch.optim.Adam(filter(lambda p: p.requires_grad, resnet.parameters()), lr=0.0001)
+optim = torch.optim.Adam(filter(lambda p: p.requires_grad, model.parameters()), lr=0.0001)
 min_cost = 20000
 while True:
   optim.zero_grad()
