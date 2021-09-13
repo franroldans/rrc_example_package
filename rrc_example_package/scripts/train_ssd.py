@@ -370,11 +370,11 @@ class SSD(nn.Module):
                 #box = boxes[keep_idxs]
 
                 # keep only topk scoring predictions
-                num_topk = min(self.topk_candidates, 25)
-                score, idxs = score.topk(num_topk)
-                box = boxes[idxs]
+                #num_topk = min(self.topk_candidates, 25)
+                #score, idxs = score.topk(num_topk)
+                #box = boxes[idxs]
 
-                image_boxes.append(box)
+                image_boxes.append(boxes)
                 image_scores.append(score)
                 image_labels.append(torch.full_like(score, fill_value=label, dtype=torch.int64, device=device))
 
