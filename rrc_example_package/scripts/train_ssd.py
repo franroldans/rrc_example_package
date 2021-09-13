@@ -703,7 +703,7 @@ optim = torch.optim.Adam(filter(lambda p: p.requires_grad, model.parameters()), 
 min_cost = 20000
 while True:
   optim.zero_grad()
-  mask, bboxes = generate_batch(env, 16)
+  mask, bboxes = generate_batch(env, 4)
   loss = model.forward(torch.from_numpy(mask).float(), bboxes)
   loss.backward()
   optim.step()
