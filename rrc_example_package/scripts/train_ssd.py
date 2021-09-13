@@ -179,7 +179,7 @@ class SSD(nn.Module):
                  size: Tuple[int, int], num_classes: int,
                  image_mean: Optional[List[float]] = None, image_std: Optional[List[float]] = None,
                  head: Optional[nn.Module] = None,
-                 score_thresh: float = 0.01,
+                 score_thresh: float = 0.00,
                  nms_thresh: float = 0.45,
                  detections_per_img: int = 25,
                  iou_thresh: float = 0.5,
@@ -363,7 +363,7 @@ class SSD(nn.Module):
             image_scores = []
             image_labels = []
             for label in range(0, num_classes):
-                score = scores[:, label]
+                score = scores[:, label+1]
 
                 keep_idxs = score > self.score_thresh
                 score = score[keep_idxs]
