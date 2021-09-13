@@ -379,7 +379,7 @@ class SSD(nn.Module):
                 image_labels.append(torch.full_like(torch.from_numpy(score), fill_value=label, dtype=torch.int64, device=device))
 
             image_boxes = torch.cat(image_boxes, dim=0)
-            image_scores = torch.cat(image_scores, dim=0)
+            image_scores = torch.cat(torch.from_numpy(image_scores), dim=0)
             image_labels = torch.cat(image_labels, dim=0)
 
             # non-maximum suppression
