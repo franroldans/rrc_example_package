@@ -693,7 +693,7 @@ def generate_batch(env, batch_size):
 		batch[i] = seg_mask
 	return batch, goals"""
 
-train = False
+train = True
 model = my_ssd300_vgg16(num_classes=1)
 env = rearrange_dice_env.RealRobotRearrangeDiceEnv(rearrange_dice_env.ActionType.POSITION,goal= None,step_size=1,)
 env.reset()
@@ -709,8 +709,9 @@ if train:
 	  loss.backward()
 	  optim.step()
 	  if loss < min_cost:
-	      min_cost = loss
-	      torch.save(model.state_dict(), './ssd_test.pth')
+			min_cost = loss
+			print('Saving model')
+			torch.save(model.state_dict(), './ssd_test.pth')
 else:
 	mask, bboxes = generate_batch(env, 1)
 	model.load_state_dict(torch.load('./ssd_test.pth', map_location = torch.device('cpu')))
