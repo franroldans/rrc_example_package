@@ -365,14 +365,14 @@ class SSD(nn.Module):
             for label in range(0, num_classes):
                 score = np.stack(([1],)*self.detections_per_img)
 
-                keep_idxs = score > self.score_thresh
-                score = score[keep_idxs]
-                box = boxes[keep_idxs]
+                #keep_idxs = score > self.score_thresh
+                #score = score[keep_idxs]
+                #box = boxes[keep_idxs]
 
                 # keep only topk scoring predictions
                 num_topk = min(self.topk_candidates, score.size(0))
                 score, idxs = score.topk(num_topk)
-                box = box[idxs]
+                box = boxes[idxs]
 
                 image_boxes.append(box)
                 image_scores.append(score)
