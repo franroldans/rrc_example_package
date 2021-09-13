@@ -358,7 +358,7 @@ class SSD(nn.Module):
         for boxes, scores, anchors, image_shape in zip(bbox_regression, pred_scores, image_anchors, image_shapes):
             boxes = self.box_coder.decode_single(boxes, anchors)
             boxes = box_ops.clip_boxes_to_image(boxes, image_shape)
-            print(boxes)
+            print(boxes.shape)
 
             image_boxes = []
             image_scores = []
