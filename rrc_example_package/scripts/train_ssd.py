@@ -181,7 +181,7 @@ class SSD(nn.Module):
                  head: Optional[nn.Module] = None,
                  score_thresh: float = 0.01,
                  nms_thresh: float = 0.45,
-                 detections_per_img: int = 200,
+                 detections_per_img: int = 25,
                  iou_thresh: float = 0.5,
                  topk_candidates: int = 400,
                  positive_fraction: float = 0.25):
@@ -362,7 +362,7 @@ class SSD(nn.Module):
             image_boxes = []
             image_scores = []
             image_labels = []
-            for label in range(1, num_classes):
+            for label in range(0, num_classes):
                 score = scores[:, label]
 
                 keep_idxs = score > self.score_thresh
