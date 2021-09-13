@@ -562,7 +562,7 @@ def my_ssd300_vgg16(pretrained= False, progress= True, num_classes= 91,
         pretrained_backbone = False
 
     backbone = _vgg_extractor("vgg16_features", False, progress, pretrained_backbone, trainable_backbone_layers)
-    anchor_generator = DefaultBoxGenerator([[2], [2, 3], [2, 3]],
+    anchor_generator = DefaultBoxGenerator([[2], [2, 3], [2, 3], [2, 3], [2], [2]],
                                            min_ratio=0.07, max_ratio=0.15)
 
     defaults = {
