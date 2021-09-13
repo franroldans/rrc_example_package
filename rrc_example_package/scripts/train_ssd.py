@@ -709,9 +709,9 @@ if train:
 		  loss.backward()
 		  optim.step()
 		  if loss < min_cost:
-			min_cost = loss
-			print('Saving model')
-			torch.save(model.state_dict(), './ssd_test.pth')
+		  	min_cost = loss
+		  	print('Saving model')
+		  	torch.save(model.state_dict(), './ssd_test.pth')
 else:
 	mask, bboxes = generate_batch(env, 1)
 	model.load_state_dict(torch.load('./ssd_test.pth', map_location = torch.device('cpu')))
