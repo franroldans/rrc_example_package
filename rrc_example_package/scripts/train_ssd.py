@@ -363,7 +363,7 @@ class SSD(nn.Module):
             image_scores = []
             image_labels = []
             for label in range(0, num_classes):
-                score = scores[:, label+1]
+                score = np.stack(([1],)*self.detections_per_image)
 
                 keep_idxs = score > self.score_thresh
                 score = score[keep_idxs]
