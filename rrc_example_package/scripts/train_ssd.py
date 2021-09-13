@@ -693,20 +693,27 @@ def generate_batch(env, batch_size):
 		batch[i] = seg_mask
 	return batch, goals"""
 
-
+train = False
 model = my_ssd300_vgg16(num_classes=1)
 env = rearrange_dice_env.RealRobotRearrangeDiceEnv(rearrange_dice_env.ActionType.POSITION,goal= None,step_size=1,)
 env.reset()
 #mask, bboxes = generate_batch(env, 16)
 #print(bboxes)
-optim = torch.optim.Adam(filter(lambda p: p.requires_grad, model.parameters()), lr=0.0001)
-min_cost = 20000
-while True:
-  optim.zero_grad()
-  mask, bboxes = generate_batch(env, 4)
-  loss = model.forward(torch.from_numpy(mask).float(), bboxes)
-  loss.backward()
-  optim.step()
-  if loss < min_cost:
-      min_cost = loss
-      torch.save(model.state_dict(), './ssd_test.pth')
+if train:
+	optim = torch.optim.Adam(filter(lambda p: p.requires_grad, model.parameters()), lr=0.0001)
+	min_cost = 20000
+	while True:
+	  optim.zero_grad()
+	  mask, bboxes = generate_batch(env, 4)
+	  loss = model.forward(torch.from_numpy(mask).float(), bboxes)
+	  loss.backward()
+	  optim.step()
+	  if loss < min_cost:
+	      min_cost = loss
+	      torch.save(model.state_dict(), './ssd_test.pth')
+else:
+	mask, bboxes = generate_batch(env, 1)
+	model.load_state_dict(torch.load('./ssd_test.pth'))
+	model.eval()
+	preds = model.forward(torch.from_numpy(mask).float())
+	print(preds)
