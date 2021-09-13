@@ -358,7 +358,7 @@ class SSD(nn.Module):
         for boxes, scores, anchors, image_shape in zip(bbox_regression, pred_scores, image_anchors, image_shapes):
             print(scores)
             boxes = self.box_coder.decode_single(boxes, anchors)
-            boxes = box_ops.clip_boxes_to_image(boxes, image_shape)[:699]
+            boxes = box_ops.clip_boxes_to_image(boxes, image_shape)
             print(boxes.shape)
             print(boxes)
 
@@ -366,7 +366,7 @@ class SSD(nn.Module):
             image_scores = []
             image_labels = []
             for label in range(0, num_classes):
-                score = np.stack(([1],)*self.detections_per_img)
+                score = np.stack(([1],)*len(boxes))
 
                 #keep_idxs = score > self.score_thresh
                 #score = score[keep_idxs]
