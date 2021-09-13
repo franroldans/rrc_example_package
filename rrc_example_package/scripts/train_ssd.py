@@ -713,7 +713,7 @@ if train:
 	      torch.save(model.state_dict(), './ssd_test.pth')
 else:
 	mask, bboxes = generate_batch(env, 1)
-	model.load_state_dict(torch.load('./ssd_test.pth'))
+	model.load_state_dict(torch.load('./ssd_test.pth', map_location = torch.device('cpu')))
 	model.eval()
 	preds = model.forward(torch.from_numpy(mask).float())
 	print(preds)
