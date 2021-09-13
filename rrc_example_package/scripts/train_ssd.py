@@ -370,7 +370,7 @@ class SSD(nn.Module):
                 #box = boxes[keep_idxs]
 
                 # keep only topk scoring predictions
-                num_topk = min(self.topk_candidates, score.size(0))
+                num_topk = min(self.topk_candidates, 25)
                 score, idxs = score.topk(num_topk)
                 box = boxes[idxs]
 
