@@ -50,15 +50,6 @@ def image2coords(camera_observation, camera_params, write_images=False, simulati
     for i, c in enumerate(camera_observation.cameras):
         copy = convert_image(c.image.copy())
         seg_mask = segment_image(convert_image(c.image))
-        """grey = cv2.cvtColor(convert_image(c.image), cv2.COLOR_BGR2GRAY)
-        grey = grey * segment_image(convert_image(c.image))
-        if write_images:
-            cv2.imwrite('grey{}.png'.format(i), grey)
-            cv2.imwrite('seg{}.png'.format(i),segment_image(convert_image(c.image)))
-        decrease_noise = cv2.fastNlMeansDenoising(grey, 10, 15, 7, 21)
-        blurred = cv2.GaussianBlur(decrease_noise, (3, 3), 0)
-        canny = cv2.Canny(blurred, 10, 30)
-        thresh = cv2.threshold(canny, 0, 255, cv2.THRESH_OTSU + cv2.THRESH_BINARY)[1]"""
         contours = cv2.findContours(seg_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         contours = contours[0] if len(contours) == 2 else contours[1]
         out = []
@@ -84,17 +75,18 @@ def image2coords(camera_observation, camera_params, write_images=False, simulati
     return coords
     
 def main():
+    simulation = True
     env = rearrange_dice_env.RealRobotRearrangeDiceEnv(
         rearrange_dice_env.ActionType.POSITION,
         goal= None,
         step_size=1,
     )
     env.reset()
-    log_reader = tricamera.LogReader("./camera_data.dat")
-    camera_observation = log_reader.data[0]
-    """for observation in log_reader.data:
-        image = convert_image(observation.cameras[0].image)"""
-    #camera_observation = env.platform.get_camera_observation(0)
+    if not simulation:
+        log_reader = tricamera.LogReader("./camera_data.dat")
+        camera_observation = log_reader.data[0]
+    else:
+        camera_observation = env.platform.get_camera_observation(0)
     camera_params = env.camera_params
     coords = image2coords(camera_observation, camera_params, True)
     print(coords)
