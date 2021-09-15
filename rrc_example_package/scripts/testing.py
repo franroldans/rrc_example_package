@@ -78,7 +78,7 @@ def image2coords(camera_observation, camera_params, write_images=False, simulati
     return coords
     
 def main():
-    simulation = True
+    simulation = False
     env = rearrange_dice_env.RealRobotRearrangeDiceEnv(
         rearrange_dice_env.ActionType.POSITION,
         goal= None,
