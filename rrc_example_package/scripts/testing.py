@@ -49,7 +49,8 @@ def image2coords(camera_observation, camera_params, write_images=False, simulati
         convert_image = utils.convert_image
     for i, c in enumerate(camera_observation.cameras):
         copy = convert_image(c.image.copy())
-        grey = cv2.cvtColor(convert_image(c.image), cv2.COLOR_BGR2GRAY)
+        seg_mask = segment_image(convert_image(c.image))
+        """grey = cv2.cvtColor(convert_image(c.image), cv2.COLOR_BGR2GRAY)
         grey = grey * segment_image(convert_image(c.image))
         if write_images:
             cv2.imwrite('grey{}.png'.format(i), grey)
@@ -57,8 +58,8 @@ def image2coords(camera_observation, camera_params, write_images=False, simulati
         decrease_noise = cv2.fastNlMeansDenoising(grey, 10, 15, 7, 21)
         blurred = cv2.GaussianBlur(decrease_noise, (3, 3), 0)
         canny = cv2.Canny(blurred, 10, 30)
-        thresh = cv2.threshold(canny, 0, 255, cv2.THRESH_OTSU + cv2.THRESH_BINARY)[1]
-        contours = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+        thresh = cv2.threshold(canny, 0, 255, cv2.THRESH_OTSU + cv2.THRESH_BINARY)[1]"""
+        contours = cv2.findContours(seg_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         contours = contours[0] if len(contours) == 2 else contours[1]
         out = []
         for c in contours:
@@ -68,8 +69,9 @@ def image2coords(camera_observation, camera_params, write_images=False, simulati
             world_point_c = image2world((x_c, y_c), camera_params[i], z = 0.011)
             out.append([(x, y, w, h), world_point_c]) # return bboxes and 3d point
             # With the bounding rectangle coordinates, draw a green bounding boxes and its centers for visualization purposes
-            cv2.rectangle(copy, (x, y), (x + w, y + h), (36, 255, 12), 2)
-            cv2.circle(copy, (x_c, y_c), radius=0, color=(36, 255, 12), thickness=2)
+            if write_images:
+                cv2.rectangle(copy, (x, y), (x + w, y + h), (36, 255, 12), 2)
+                cv2.circle(copy, (x_c, y_c), radius=0, color=(36, 255, 12), thickness=2)
         id = i + 10
         if write_images: 
             cv2.imwrite('test{}.png'.format(id), copy)
