@@ -96,7 +96,7 @@ def main():
         image = convert_image(observation.cameras[0].image)"""
     #camera_observation = env.platform.get_camera_observation(0)
     camera_params = env.camera_params
-    coords = image2coords(camera_observation, camera_params, False)
+    coords = image2coords(camera_observation, camera_params, True)
     print(coords)
     
 if __name__ == "__main__":
