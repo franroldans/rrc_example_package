@@ -48,10 +48,7 @@ def image2coords(camera_observation, camera_params, write_images=False, simulati
     else:
         convert_image = utils.convert_image
     for i, c in enumerate(camera_observation.cameras):
-        if simulation:
-            copy = convert_image(c.image.copy())
-        else:
-            copy = c.image.copy()
+        copy = convert_image(c.image.copy())
         seg_mask = segment_image(convert_image(c.image))
         contours = cv2.findContours(seg_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         contours = contours[0] if len(contours) == 2 else contours[1]
